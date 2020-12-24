@@ -41,7 +41,7 @@ public class CarControl1 : MonoBehaviour
             }
             else if(acceleration == 0)
             {
-                WC[i].brakeTorque = braketorque;
+                WC[i].brakeTorque = braketorque;//braking
                 Debug.Log("braking");
 
             }
@@ -54,9 +54,9 @@ public class CarControl1 : MonoBehaviour
             Quaternion wheelRotation;
             Vector3 wheelPosition;
 
-            WC[i].GetWorldPose(out wheelPosition, out wheelRotation);
-            wheels[i].transform.position = wheelPosition;
-            wheels[i].transform.rotation = wheelRotation;
+            WC[i].GetWorldPose(out wheelPosition, out wheelRotation);// get the positionn of the wheel colliders
+            wheels[i].transform.position = wheelPosition;//assign that collider positionn to the wheel mesh
+            wheels[i].transform.rotation = wheelRotation;//give that collider rotation to the wheel meesh
 
         }
     }
