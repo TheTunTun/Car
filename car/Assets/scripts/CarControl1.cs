@@ -15,6 +15,8 @@ public class CarControl1 : MonoBehaviour
     private float braketorque = 30000;
     [SerializeField]
     private float maxSteerAngle = 30;
+    [SerializeField]
+    private Rigidbody carbody;
 
     void Start()
     {
@@ -30,23 +32,23 @@ public class CarControl1 : MonoBehaviour
         //Debug.Log(thrustTorque);
         for(int i = 0; i < 4; i++)
         {
+            WC[i].brakeTorque = 0;
 
-            if(acceleration != 0)
+            
+            Debug.Log("driving");
+            if(i == 2 || i == 3)
             {
-                WC[i].brakeTorque = 0;
-                WC[i].motorTorque = thrustTorque;//rotate the wheel collider
-                Debug.Log("driving");
-                
-
-            }
-            else if(acceleration == 0)
-            {
-                WC[i].brakeTorque = braketorque;//braking
-                Debug.Log("braking");
-
+                if(WC[i].rpm < 500)
+                {
+                    WC[i].motorTorque = thrustTorque;
+                }
+                else
+                {
+                    WC[i].motorTorque = 0;
+                }
             }
 
-            if (i < 3)
+            if (i == 0 || i == 1) 
             {
                 WC[i].steerAngle = carturn;
             }
@@ -61,11 +63,27 @@ public class CarControl1 : MonoBehaviour
         }
     }
 
+    void Brake()
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            WC[i].brakeTorque = carbody.mass * braketorque;
+            WC[i].motorTorque = 0;
+           
+            Debug.Log("brake");
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         float a = Input.GetAxis("Vertical");
         float b = Input.GetAxis("Horizontal");
+        
         Drive(a,b);
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Brake();
+        }
     }
 }
