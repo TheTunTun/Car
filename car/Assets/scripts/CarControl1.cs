@@ -17,10 +17,66 @@ public class CarControl1 : MonoBehaviour
     private float maxSteerAngle = 30;
     [SerializeField]
     private Rigidbody carbody;
+    private int lightMode = 0;
+    [SerializeField]
+    private Light[] headLights;
+    [SerializeField]
+    private float lowBeanRotation = 26;   
+    [SerializeField]
+    private float lowBeanIntensity = 2;
+    [SerializeField]
+    private float lowBeanRange = 10;
+    [SerializeField]
+    private float lowBeanSpotAngle = 58;
+
+
+    [SerializeField]
+    private float highBeanRotation = 10;    
+    [SerializeField]
+    private float highBeanIntensity = 4;
+    [SerializeField]
+    private float highBeanRange = 20;
+    [SerializeField]
+    private float highBeanSpotAngle = 100;
+
 
     void Start()
     {
+        ChangeLight();
+    }
+
+    void ChangeLight()
+    {
         
+
+        foreach(Light light in headLights)
+        {
+            
+            switch (lightMode)
+            {
+                case 0:
+                    light.intensity = 0;
+                    Debug.Log("off");
+                    break;
+                case 1:
+                    light.intensity = lowBeanIntensity;
+                    
+                    light.transform.localRotation = Quaternion.Euler(lowBeanRotation, 0, 0);
+                    light.range = lowBeanRange;
+                    light.spotAngle = lowBeanSpotAngle;
+                    Debug.Log("low");
+                    break;
+                case 2:
+                    light.intensity = highBeanIntensity;
+                    
+                    light.transform.localRotation = Quaternion.Euler(highBeanRotation, 0, 0);
+                    light.range = highBeanRange;
+                    light.spotAngle = highBeanSpotAngle;
+                    Debug.Log("high");
+                    break;
+
+            }
+        }
     }
 
     void Drive(float acceleration, float steer)
@@ -35,7 +91,7 @@ public class CarControl1 : MonoBehaviour
             WC[i].brakeTorque = 0;
 
             
-            Debug.Log("driving");
+            //Debug.Log("driving");
             if(i == 2 || i == 3)
             {
                 if(WC[i].rpm < 500)
@@ -70,7 +126,7 @@ public class CarControl1 : MonoBehaviour
             WC[i].brakeTorque = carbody.mass * braketorque;
             WC[i].motorTorque = 0;
            
-            Debug.Log("brake");
+            //Debug.Log("brake");
         }
     }
 
@@ -80,10 +136,24 @@ public class CarControl1 : MonoBehaviour
         float a = Input.GetAxis("Vertical");
         float b = Input.GetAxis("Horizontal");
         
+        
         Drive(a,b);
         if (Input.GetKey(KeyCode.Space))
         {
             Brake();
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (lightMode != 2)
+            {
+                lightMode++;
+            }
+            else
+            {
+                lightMode = 0;
+            }
+            ChangeLight();
         }
     }
 }
