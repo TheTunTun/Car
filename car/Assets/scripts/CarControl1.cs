@@ -39,6 +39,14 @@ public class CarControl1 : MonoBehaviour
     [SerializeField]
     private float highBeanSpotAngle = 100;
 
+    [SerializeField]
+    private GameObject backLight;
+    [SerializeField]
+    private Material backLightOff;
+    [SerializeField]
+    private Material backLightOn;
+   
+
 
     void Start()
     {
@@ -51,7 +59,8 @@ public class CarControl1 : MonoBehaviour
 
         foreach(Light light in headLights)
         {
-            
+            var currentLocation = light.transform.localRotation;
+
             switch (lightMode)
             {
                 case 0:
@@ -61,7 +70,7 @@ public class CarControl1 : MonoBehaviour
                 case 1:
                     light.intensity = lowBeanIntensity;
                     
-                    light.transform.localRotation = Quaternion.Euler(lowBeanRotation, 0, 0);
+                    light.transform.localRotation = Quaternion.Euler(lowBeanRotation, currentLocation.y, 0);
                     light.range = lowBeanRange;
                     light.spotAngle = lowBeanSpotAngle;
                     Debug.Log("low");
@@ -69,7 +78,7 @@ public class CarControl1 : MonoBehaviour
                 case 2:
                     light.intensity = highBeanIntensity;
                     
-                    light.transform.localRotation = Quaternion.Euler(highBeanRotation, 0, 0);
+                    light.transform.localRotation = Quaternion.Euler(highBeanRotation, currentLocation.y, 0);
                     light.range = highBeanRange;
                     light.spotAngle = highBeanSpotAngle;
                     Debug.Log("high");
@@ -121,12 +130,24 @@ public class CarControl1 : MonoBehaviour
 
     void Brake()
     {
+        ChangeBacklight(true);
         for(int i = 0; i < 4; i++)
         {
             WC[i].brakeTorque = carbody.mass * braketorque;
             WC[i].motorTorque = 0;
            
-            //Debug.Log("brake");
+        }
+    }
+
+    void ChangeBacklight(bool lighton)
+    {
+        if (lighton == true)
+        {
+            backLight.GetComponent<MeshRenderer>().material = backLightOn;
+        }
+        else
+        {
+            backLight.GetComponent<MeshRenderer>().material = backLightOff;
         }
     }
 
@@ -141,6 +162,11 @@ public class CarControl1 : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             Brake();
+
+        }
+        else
+        {
+            ChangeBacklight(false);
         }
 
         if (Input.GetKeyDown(KeyCode.L))
