@@ -5,8 +5,8 @@ using UnityEngine;
 public class CarControl1 : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField]
-    private WheelCollider[] WC;
+    
+    public WheelCollider[] WC;
     [SerializeField]
     private GameObject[] wheels;
     [SerializeField]
@@ -17,9 +17,10 @@ public class CarControl1 : MonoBehaviour
     private float maxSteerAngle = 30;
     [SerializeField]
     private Rigidbody carbody;
+    [Range(0,2)]
     private int lightMode = 0;
     [SerializeField]
-    private Light[] headLights;
+    protected Light[] headLights;
     [SerializeField]
     private float lowBeanRotation = 26;   
     [SerializeField]
@@ -45,27 +46,30 @@ public class CarControl1 : MonoBehaviour
     private Material backLightOff;
     [SerializeField]
     private Material backLightOn;
-   
 
+    [SerializeField]
+    private float test = 0;
 
     void Start()
     {
         ChangeLight();
     }
 
-    void ChangeLight()
+    public void ChangeLight()
     {
         
 
         foreach(Light light in headLights)
         {
             var currentLocation = light.transform.localRotation;
+            
 
             switch (lightMode)
             {
                 case 0:
                     light.intensity = 0;
                     Debug.Log("off");
+
                     break;
                 case 1:
                     light.intensity = lowBeanIntensity;
@@ -85,12 +89,25 @@ public class CarControl1 : MonoBehaviour
                     break;
 
             }
+
+            
+        }
+
+        if (lightMode != 2)
+        {
+            lightMode++;
+        }
+        else
+        {
+            lightMode = 0;
         }
     }
 
-    void Drive(float acceleration, float steer)
+    public void Drive(float acceleration, float steer)
     {
+        Debug.Log("acce"+acceleration);
         acceleration = Mathf.Clamp(acceleration, -1, 1);
+        //Debug.Log("acce" + acceleration + "steer" + steer);
         steer = Mathf.Clamp(steer, -1, 1);
         float thrustTorque = acceleration * torque;
         float carturn = steer * maxSteerAngle;
@@ -121,25 +138,34 @@ public class CarControl1 : MonoBehaviour
             Quaternion wheelRotation;
             Vector3 wheelPosition;
 
+            ChangeBacklight(false);
+
             WC[i].GetWorldPose(out wheelPosition, out wheelRotation);// get the positionn of the wheel colliders
             wheels[i].transform.position = wheelPosition;//assign that collider positionn to the wheel mesh
             wheels[i].transform.rotation = wheelRotation;//give that collider rotation to the wheel meesh
-
+            
         }
     }
 
-    void Brake()
+     public void Brake()
     {
+        
+
         ChangeBacklight(true);
         for(int i = 0; i < 4; i++)
         {
             WC[i].brakeTorque = carbody.mass * braketorque;
+            
             WC[i].motorTorque = 0;
-           
+            
+            test++;
+
         }
     }
 
-    void ChangeBacklight(bool lighton)
+   
+
+    public void ChangeBacklight(bool lighton)
     {
         if (lighton == true)
         {
@@ -158,28 +184,23 @@ public class CarControl1 : MonoBehaviour
         float b = Input.GetAxis("Horizontal");
         
         
-        Drive(a,b);
-        if (Input.GetKey(KeyCode.Space))
-        {
-            Brake();
+        //Drive(a,b);
+        //if (Input.GetKey(KeyCode.Space))
+        //{
+            //Brake();
 
-        }
-        else
-        {
-            ChangeBacklight(false);
-        }
+        //}
+        //else
+        //{
+           // ChangeBacklight(false);
+       // }
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (lightMode != 2)
-            {
-                lightMode++;
-            }
-            else
-            {
-                lightMode = 0;
-            }
-            ChangeLight();
-        }
+        //if (Input.GetKeyDown(KeyCode.L))
+        //{
+           
+            //ChangeLight();
+        //}
+
+        
     }
 }
