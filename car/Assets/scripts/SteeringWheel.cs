@@ -22,15 +22,11 @@ public class SteeringWheel : MonoBehaviour,IDragHandler,IPointerDownHandler,IPoi
     private float releaseSpeed = 300f; // the speed at which the steering wheel returns to it's original angle
 
     public float output;
-    [SerializeField]
-    private bool brake = false;
+    
 
     private Vector2 center;
 
-    public void isBrake(bool b)
-    {
-        brake = b;
-    }
+    
 
     public void setForward(int f)
     {
@@ -71,11 +67,10 @@ public class SteeringWheel : MonoBehaviour,IDragHandler,IPointerDownHandler,IPoi
         output = wheelAngle / maxSteerAngle;
 
 
-        control.Drive(forward, output);
-        if(brake == true)
-        {
-            control.Brake();
-        }
+        //control.Drive(forward, output);
+        control.horizontal = output;
+        control.vertical = forward;
+        
         
         
     }

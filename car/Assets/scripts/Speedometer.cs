@@ -36,7 +36,7 @@ public class Speedometer : MonoBehaviour
     void Update()
     {
         speed = Mathf.Round(control.speedOnKm);
-        Debug.Log("speed" + speed);
+        //Debug.Log("speed" + speed);
         if(speed > speedMax)
         {
             //speed = speedMax;

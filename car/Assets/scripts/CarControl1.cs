@@ -3,109 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CarControl1 : MonoBehaviour
+
+    
 {
     // Start is called before the first frame update
+    [SerializeField] private AudioManagerScript audioManager;
+
+    [SerializeField] private WheelCollider[] WC;
+
+    [SerializeField] private GameObject[] wheels;
+
+    [SerializeField] private float torque = 200;
+
+    [SerializeField] private float braketorque = 30000;
+
+    [SerializeField] private float maxSteerAngle = 30;
+
+    [SerializeField] private Rigidbody carbody;
+
+
+    [SerializeField] private float wheelRadius = 0.4f;
+    private float rpm = 0;
+
+    private float rpmLimit = 300;
+    public float speedOnKm { get; set; }
+
     
-    public WheelCollider[] WC;
-    [SerializeField]
-    private GameObject[] wheels;
-    [SerializeField]
-    private float torque = 200;
-    [SerializeField]
-    private float braketorque = 30000;
-    [SerializeField]
-    private float maxSteerAngle = 30;
-    [SerializeField]
-    private Rigidbody carbody;
-    [Range(0,2)]
-    private int lightMode = 0;
-    [SerializeField]
-    protected Light[] headLights;
-    [SerializeField]
-    private float lowBeanRotation = 26;   
-    [SerializeField]
-    private float lowBeanIntensity = 2;
-    [SerializeField]
-    private float lowBeanRange = 10;
-    [SerializeField]
-    private float lowBeanSpotAngle = 58;
+    public float gear { get; set; }
+
+    public float vertical { get; set; }
+    public float horizontal { get; set; }
 
 
-    [SerializeField]
-    private float highBeanRotation = 10;    
-    [SerializeField]
-    private float highBeanIntensity = 4;
-    [SerializeField]
-    private float highBeanRange = 20;
-    [SerializeField]
-    private float highBeanSpotAngle = 100;
+    
+    private LightControl lightControl;
 
-    [SerializeField]
-    private GameObject backLight;
-    [SerializeField]
-    private Material backLightOff;
-    [SerializeField]
-    private Material backLightOn;
+    
 
-    [SerializeField]
-    private float test = 0;
 
+    private void Awake()
+    {
+        lightControl = GetComponent<LightControl>();
+        lightControl.ChangeLight();
+    }
     void Start()
     {
-        ChangeLight();
-    }
-
-    public void ChangeLight()
-    {
         
-
-        foreach(Light light in headLights)
-        {
-            var currentLocation = light.transform.localRotation;
-            
-
-            switch (lightMode)
-            {
-                case 0:
-                    light.intensity = 0;
-                    Debug.Log("off");
-
-                    break;
-                case 1:
-                    light.intensity = lowBeanIntensity;
-                    
-                    light.transform.localRotation = Quaternion.Euler(lowBeanRotation, currentLocation.y, 0);
-                    light.range = lowBeanRange;
-                    light.spotAngle = lowBeanSpotAngle;
-                    Debug.Log("low");
-                    break;
-                case 2:
-                    light.intensity = highBeanIntensity;
-                    
-                    light.transform.localRotation = Quaternion.Euler(highBeanRotation, currentLocation.y, 0);
-                    light.range = highBeanRange;
-                    light.spotAngle = highBeanSpotAngle;
-                    Debug.Log("high");
-                    break;
-
-            }
-
-            
-        }
-
-        if (lightMode != 2)
-        {
-            lightMode++;
-        }
-        else
-        {
-            lightMode = 0;
-        }
     }
 
     public void Drive(float acceleration, float steer)
     {
-        Debug.Log("acce"+acceleration);
+        //Debug.Log("acce"+acceleration);
         acceleration = Mathf.Clamp(acceleration, -1, 1);
         //Debug.Log("acce" + acceleration + "steer" + steer);
         steer = Mathf.Clamp(steer, -1, 1);
@@ -120,7 +68,7 @@ public class CarControl1 : MonoBehaviour
             //Debug.Log("driving");
             if(i == 2 || i == 3)
             {
-                if(WC[i].rpm < 500)
+                if(WC[i].rpm < rpmLimit)
                 {
                     WC[i].motorTorque = thrustTorque;
                 }
@@ -128,6 +76,8 @@ public class CarControl1 : MonoBehaviour
                 {
                     WC[i].motorTorque = 0;
                 }
+                rpm = WC[i].rpm;
+                //Debug.Log("rpm "+rpm);
             }
 
             if (i == 0 || i == 1) 
@@ -138,7 +88,8 @@ public class CarControl1 : MonoBehaviour
             Quaternion wheelRotation;
             Vector3 wheelPosition;
 
-            ChangeBacklight(false);
+            lightControl.ChangeBacklight(false);
+            audioManager.isBraking = false;
 
             WC[i].GetWorldPose(out wheelPosition, out wheelRotation);// get the positionn of the wheel colliders
             wheels[i].transform.position = wheelPosition;//assign that collider positionn to the wheel mesh
@@ -149,58 +100,84 @@ public class CarControl1 : MonoBehaviour
 
      public void Brake()
     {
-        
 
-        ChangeBacklight(true);
+
+        lightControl.ChangeBacklight(true);
         for(int i = 0; i < 4; i++)
         {
             WC[i].brakeTorque = carbody.mass * braketorque;
             
             WC[i].motorTorque = 0;
             
-            test++;
+            
 
         }
-    }
-
-   
-
-    public void ChangeBacklight(bool lighton)
-    {
-        if (lighton == true)
-        {
-            backLight.GetComponent<MeshRenderer>().material = backLightOn;
-        }
-        else
-        {
-            backLight.GetComponent<MeshRenderer>().material = backLightOff;
-        }
+        audioManager.BrakeSound();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float a = Input.GetAxis("Vertical");
-        float b = Input.GetAxis("Horizontal");
-        
-        
+        if(vertical == 0 && horizontal == 0)
+        {
+            float v = Input.GetAxis("Vertical");
+            float h = Input.GetAxis("Horizontal");
+            Drive(v, h);
+        }
+        else
+        {
+            Drive(vertical, horizontal);
+        }
+
         //Drive(a,b);
-        //if (Input.GetKey(KeyCode.Space))
-        //{
-            //Brake();
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Brake();
 
-        //}
-        //else
-        //{
-           // ChangeBacklight(false);
-       // }
-
-        //if (Input.GetKeyDown(KeyCode.L))
-        //{
-           
-            //ChangeLight();
-        //}
-
+        }
         
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+
+            lightControl.ChangeLight();
+        }
+
+        Speed();
+
+    }
+
+    public void Speed()
+    {
+        float circumference = 2f * 3.14f * wheelRadius; //Circumference of a circle C = 2 pi r 
+        float speedOnMeter = (circumference * rpm) * 60;  //metre per hour
+        speedOnKm = speedOnMeter / 1000;
+        //Debug.Log("Speed "+speedOnKm + " km" + "rpm" + rpm);
+    }
+
+    public void RpmLimiter(float g)
+    {
+        gear = g;
+        switch (g)
+        {
+            case 1:
+                rpmLimit = 300;
+            break;
+            case 2:
+                rpmLimit = 400;
+            break;
+            case 3:
+                rpmLimit = 500;
+            break;
+            case 4:
+                rpmLimit = 600;
+            break;
+            case 5:
+                rpmLimit = 700;
+            break;
+
+        }
+        //Debug.Log("gear " + gear + "rpmlimit " + rpmLimit);
+
     }
 }
