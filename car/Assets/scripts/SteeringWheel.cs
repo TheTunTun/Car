@@ -11,6 +11,9 @@ public class SteeringWheel : MonoBehaviour,IDragHandler,IPointerDownHandler,IPoi
     private RectTransform wheel; // transform of the wheel gui
     [SerializeField]
     private CarControl1 control;
+
+    [SerializeField]private camera cameraMode;
+    [SerializeField] private Transform steeringModel;
     
     [SerializeField]
     private int forward = 0;
@@ -70,8 +73,14 @@ public class SteeringWheel : MonoBehaviour,IDragHandler,IPointerDownHandler,IPoi
         //control.Drive(forward, output);
         control.horizontal = output;
         control.vertical = forward;
-        
-        
+
+        //Debug.Log(wheel.rotation);
+
+        if(cameraMode.thirdPerson == false)
+        {
+            steeringModel.localEulerAngles = wheel.localEulerAngles;
+            
+        }
         
     }
 

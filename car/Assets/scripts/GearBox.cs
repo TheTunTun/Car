@@ -39,7 +39,15 @@ public class GearBox : MonoBehaviour
         }
 
         control.RpmLimiter(gearBox.value);
-        gearBoxDisplay.text = gearBox.value.ToString();
+        if(gearBox.value == 0)
+        {
+            gearBoxDisplay.text = "R";
+        }
+        else
+        {
+            gearBoxDisplay.text = gearBox.value.ToString();
+        }
+        
         
     }
 

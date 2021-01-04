@@ -10,6 +10,8 @@ public class AudioManagerScript : MonoBehaviour
     [SerializeField] private AudioSource engine;
     [SerializeField] private AudioSource brake;
     [SerializeField] private AudioSource honk;
+    [SerializeField] private AudioSource impact;
+
     
     [SerializeField] private AudioSource gear;
     
@@ -18,6 +20,10 @@ public class AudioManagerScript : MonoBehaviour
 
     [SerializeField] private float minPitch = 0.4f;
     [SerializeField] private float maxPitch = 1.2f;
+
+    [SerializeField] private float minImpact = 0.2f;
+    [SerializeField] private float maxImpact = 1f;
+
     [SerializeField] private float maxSpeed = 120f;
 
     public bool gearChanged { get; set; }
@@ -32,7 +38,8 @@ public class AudioManagerScript : MonoBehaviour
     void Enginesound()
     {
         float enginePitchRange = maxPitch - minPitch;
-        float normalizedSpeed = control.speedOnKm / maxSpeed;
+        float absoluteSpeed = Mathf.Abs(control.speedOnKm);
+        float normalizedSpeed = absoluteSpeed / maxSpeed;
 
         engine.pitch = minPitch + enginePitchRange * normalizedSpeed;
         
@@ -40,7 +47,7 @@ public class AudioManagerScript : MonoBehaviour
 
     public void BrakeSound()
     {
-        if (brake.isPlaying == false && control.speedOnKm > 70)
+        if (brake.isPlaying == false && control.speedOnKm > 60)
         {
             brake.Play();
             Debug.Log("brake sound");
@@ -65,6 +72,15 @@ public class AudioManagerScript : MonoBehaviour
             honk.Play();
             Debug.Log("honk");
         }
+    }
+
+    public void Impact()
+    {
+        float impactSoundRange = maxImpact - minImpact;
+        float normalizedSpeed = control.speedOnKm / maxSpeed;
+        impact.volume = minImpact + impactSoundRange * normalizedSpeed;
+        //Debug.Log(impact.volume);
+        impact.Play();
     }
 
     // Update is called once per frame

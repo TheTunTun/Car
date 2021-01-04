@@ -21,6 +21,7 @@ public class CarControl1 : MonoBehaviour
 
     [SerializeField] private Rigidbody carbody;
 
+    [SerializeField]public bool brakePressed { set; get; }
 
     [SerializeField] private float wheelRadius = 0.4f;
     private float rpm = 0;
@@ -33,6 +34,9 @@ public class CarControl1 : MonoBehaviour
 
     public float vertical { get; set; }
     public float horizontal { get; set; }
+
+    public float forward { get; set; }
+
 
 
     
@@ -57,7 +61,7 @@ public class CarControl1 : MonoBehaviour
         acceleration = Mathf.Clamp(acceleration, -1, 1);
         //Debug.Log("acce" + acceleration + "steer" + steer);
         steer = Mathf.Clamp(steer, -1, 1);
-        float thrustTorque = acceleration * torque;
+        float thrustTorque = acceleration * torque * forward;
         float carturn = steer * maxSteerAngle;
         //Debug.Log(thrustTorque);
         for(int i = 0; i < 4; i++)
@@ -68,7 +72,8 @@ public class CarControl1 : MonoBehaviour
             //Debug.Log("driving");
             if(i == 2 || i == 3)
             {
-                if(WC[i].rpm < rpmLimit)
+                //Debug.Log(WC[i].rpm);
+                if(Mathf.Abs(WC[i].rpm) < rpmLimit)
                 {
                     WC[i].motorTorque = thrustTorque;
                 }
@@ -88,7 +93,7 @@ public class CarControl1 : MonoBehaviour
             Quaternion wheelRotation;
             Vector3 wheelPosition;
 
-            lightControl.ChangeBacklight(false);
+            //lightControl.ChangeBacklight(false);
             audioManager.isBraking = false;
 
             WC[i].GetWorldPose(out wheelPosition, out wheelRotation);// get the positionn of the wheel colliders
@@ -108,7 +113,7 @@ public class CarControl1 : MonoBehaviour
             WC[i].brakeTorque = carbody.mass * braketorque;
             
             WC[i].motorTorque = 0;
-            
+            //Debug.Log("braked");
             
 
         }
@@ -120,9 +125,9 @@ public class CarControl1 : MonoBehaviour
     {
         if(vertical == 0 && horizontal == 0)
         {
-            float v = Input.GetAxis("Vertical");
-            float h = Input.GetAxis("Horizontal");
-            Drive(v, h);
+            //float v = Input.GetAxis("Vertical");
+            //float h = Input.GetAxis("Horizontal");
+            //Drive(v, h);
         }
         else
         {
@@ -130,10 +135,16 @@ public class CarControl1 : MonoBehaviour
         }
 
         //Drive(a,b);
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && brakePressed == false)
         {
             Brake();
 
+        }else if(brakePressed == true)
+        {
+            Brake();
+        }
+        else{
+            lightControl.ChangeBacklight(false);
         }
         
 
@@ -160,21 +171,31 @@ public class CarControl1 : MonoBehaviour
         gear = g;
         switch (g)
         {
+            case 0:
+                rpmLimit = 300;
+                forward = -1;
+                break;
+
             case 1:
                 rpmLimit = 300;
+                forward = 1;
             break;
             case 2:
                 rpmLimit = 400;
-            break;
+                forward = 1;
+                break;
             case 3:
                 rpmLimit = 500;
-            break;
+                forward = 1;
+                break;
             case 4:
                 rpmLimit = 600;
-            break;
+                forward = 1;
+                break;
             case 5:
                 rpmLimit = 700;
-            break;
+                forward = 1;
+                break;
 
         }
         //Debug.Log("gear " + gear + "rpmlimit " + rpmLimit);

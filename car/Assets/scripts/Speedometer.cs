@@ -39,7 +39,7 @@ public class Speedometer : MonoBehaviour
         //Debug.Log("speed" + speed);
         if(speed > speedMax)
         {
-            //speed = speedMax;
+            speed = speedMax;
         }
         needle.eulerAngles = new Vector3(0, 0, GetSpeedRotation());
     }
@@ -48,7 +48,10 @@ public class Speedometer : MonoBehaviour
     {
         float totalAngleSize = ZERO_SPEED_ANGLE - MAX_SPEED_ANGLE;
 
-        float speedNormalized = speed / speedMax;
+        float absoluteSpeed = Mathf.Abs(speed);
+        
+
+        float speedNormalized = absoluteSpeed / speedMax;
 
         return ZERO_SPEED_ANGLE - speedNormalized * totalAngleSize;// if speed = 120, normalized = 1, 
                                                                     //so, 230 - 250 = -20 = MAX_SPEED_ANGLE

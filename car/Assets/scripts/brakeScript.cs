@@ -10,7 +10,7 @@ public class brakeScript : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
 {
     bool pointerDown = false;
     // Start is called before the first frame update
-    public SteeringWheel steer;
+    
     [SerializeField]
     private CarControl1 control;
 
@@ -34,8 +34,12 @@ public class brakeScript : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
     {
         if(pointerDown)
         {
-            
-            control.Brake();
+
+            control.brakePressed = true;
+        }
+        else
+        {
+            control.brakePressed = false;
         }
         
     }
