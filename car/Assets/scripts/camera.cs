@@ -19,9 +19,12 @@ public class camera : MonoBehaviour
 
     [SerializeField] private Transform firstPersonPosition;
     [SerializeField] private Text cameraText;
+    [SerializeField] private Text standText;
     [SerializeField] private Transform thirdPersonPosition;
     [SerializeField] private MeshRenderer carBody;
     [SerializeField] private GameObject firstPersonCar;
+
+    public bool stand { get; set; }
 
     public bool thirdPerson { get; set; }
 
@@ -48,8 +51,11 @@ public class camera : MonoBehaviour
                             objectFollow.up * offset.y;
         //Debug.Log(targetPos);
 
-        transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);// go between one value to another
-        //Debug.Log("followspeed"+ followSpeed * followSpeedMultiplyer * Time.deltaTime);
+        if(stand == false)
+        {
+            transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);// go between one value to another
+                                                                                                           //Debug.Log("followspeed"+ followSpeed * followSpeedMultiplyer * Time.deltaTime);
+        }
     }
 
     public void MoveToTarget()
@@ -106,6 +112,18 @@ public class camera : MonoBehaviour
 
             GetComponent<Camera>().fieldOfView = 50;
         }
+
+        if(Input.GetKey(KeyCode.L))
+        {
+            ChangeStandMode();
+        }
+    }
+
+    public void ChangeStandMode()
+    {
+        thirdPerson = true;
+        if (stand) { stand = false; standText.text = "Stand Mode Off"; } 
+        else { stand = true; standText.text = "Stand Mode Oo"; }
     }
 
     // Update is called once per frame
