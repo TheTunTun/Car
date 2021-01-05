@@ -4,6 +4,7 @@ ScriptsOnlyBuild:
     - AudioManagerScript
     - CarBodyCollide
     - CarControl1
+    - FuelGauge
     - GearBox
     - LightControl
     - MainMenu
@@ -11,6 +12,7 @@ ScriptsOnlyBuild:
     - SteeringWheel
     - brakeScript
     - camera
+    - fuelbarrel
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     UnityEditor.TestRunner.dll:
@@ -121,6 +123,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 83
       Script: {instanceID: 0}
+    - Class: 84
+      Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
@@ -163,9 +167,15 @@ ScriptsOnlyBuild:
       Script: {instanceID: 13066}
     - Class: 114
       Script: {instanceID: 13068}
+    - Class: 114
+      Script: {instanceID: 17038}
+    - Class: 114
+      Script: {instanceID: 97120}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
+      Script: {instanceID: 0}
+    - Class: 136
       Script: {instanceID: 0}
     - Class: 146
       Script: {instanceID: 0}
@@ -174,6 +184,8 @@ ScriptsOnlyBuild:
     - Class: 196
       Script: {instanceID: 0}
     - Class: 213
+      Script: {instanceID: 0}
+    - Class: 215
       Script: {instanceID: 0}
     - Class: 222
       Script: {instanceID: 0}
@@ -340,7 +352,7 @@ ScriptsOnlyBuild:
     className: TMP_SubMeshUI
   - hash:
       serializedVersion: 2
-      Hash: d85e4c3b930b993a1a0bc158adc6a06d
+      Hash: eada4701a04e3a06ea2f1e93d2d0d43e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: camera
@@ -406,7 +418,7 @@ ScriptsOnlyBuild:
     className: CarBodyCollide
   - hash:
       serializedVersion: 2
-      Hash: 964829db1a23382fa1db9cd75c673469
+      Hash: a19e574030c2ce2ba92182e7de799e2b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AudioManagerScript
@@ -466,7 +478,7 @@ ScriptsOnlyBuild:
     className: VerticalLayoutGroup
   - hash:
       serializedVersion: 2
-      Hash: 32f8088a54d87e3542e9b5e04ebb215b
+      Hash: bf1f1f7e727d80d190d9bd3dfd6ee4b6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SteeringWheel
@@ -640,7 +652,7 @@ ScriptsOnlyBuild:
     className: StandaloneInputModule
   - hash:
       serializedVersion: 2
-      Hash: 71ab0e3e09beb1df3df8806a76373f1d
+      Hash: dc1a058552d59dadff15efed5b3bc2b7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CarControl1
@@ -668,6 +680,18 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: e2454cf7b078e45dd4efc3a24eec8ab4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: FuelGauge
+  - hash:
+      serializedVersion: 2
+      Hash: 2c5fdf95f3fe64b9db12f9ee29e33d31
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: fuelbarrel
   platform: 13
   scenePathNames:
   - Assets/Scenes/MainMenu.unity

@@ -24,10 +24,17 @@ public class CarControl1 : MonoBehaviour
     [SerializeField]public bool brakePressed { set; get; }
 
     [SerializeField] private float wheelRadius = 0.4f;
+
+    [SerializeField] private float fuelEfficiency = 0.01f;
+
+    
     private float rpm = 0;
 
     private float rpmLimit = 300;
     public float speedOnKm { get; set; }
+
+    public float fuelMax { get; set; }
+    public float fuel { get; set; }
 
     
     public float gear { get; set; }
@@ -49,6 +56,9 @@ public class CarControl1 : MonoBehaviour
     {
         lightControl = GetComponent<LightControl>();
         lightControl.ChangeLight();
+        fuelMax = 30;
+        fuel = fuelMax;
+        
     }
     void Start()
     {
@@ -66,21 +76,20 @@ public class CarControl1 : MonoBehaviour
         //Debug.Log(thrustTorque);
         for(int i = 0; i < 4; i++)
         {
-            WC[i].brakeTorque = 0;
 
-            
             //Debug.Log("driving");
             if(i == 2 || i == 3)
-            {
+            {   
+                
                 //Debug.Log(WC[i].rpm);
+               
                 if(Mathf.Abs(WC[i].rpm) < rpmLimit)
-                {
-                    WC[i].motorTorque = thrustTorque;
-                }
-                else
-                {
-                    WC[i].motorTorque = 0;
-                }
+                    {
+                        
+                        WC[i].motorTorque = thrustTorque;
+                        //Debug.Log(WC[i].motorTorque);
+                }else{   WC[i].motorTorque = 0;  }
+
                 rpm = WC[i].rpm;
                 //Debug.Log("rpm "+rpm);
             }
@@ -103,59 +112,78 @@ public class CarControl1 : MonoBehaviour
         }
     }
 
-     public void Brake()
+     public void Brake(bool isBreaking)
     {
-
-
-        lightControl.ChangeBacklight(true);
-        for(int i = 0; i < 4; i++)
+        if (isBreaking)
         {
-            WC[i].brakeTorque = carbody.mass * braketorque;
-            
-            WC[i].motorTorque = 0;
-            //Debug.Log("braked");
-            
+            lightControl.ChangeBacklight(true);
+            for (int i = 0; i < 4; i++)
+            {
+                WC[i].brakeTorque = carbody.mass * braketorque;
 
+                WC[i].motorTorque = 0;
+                //Debug.Log("braked");
+
+
+            }
+            audioManager.BrakeSound();
         }
-        audioManager.BrakeSound();
+        else
+        {
+            lightControl.ChangeBacklight(false);
+            for (int i = 0; i < 4; i++)
+            {
+                WC[i].brakeTorque = 0;
+
+            }
+            
+        }
+
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(vertical == 0 && horizontal == 0)
-        {
-            //float v = Input.GetAxis("Vertical");
-            //float h = Input.GetAxis("Horizontal");
-            //Drive(v, h);
-        }
-        else
-        {
-            Drive(vertical, horizontal);
-        }
+        //Debug.Log(vertical);
+        Drive(vertical, horizontal);
+        
 
         //Drive(a,b);
         if (Input.GetKey(KeyCode.Space) && brakePressed == false)
         {
-            Brake();
+            Brake(true);
 
         }else if(brakePressed == true)
         {
-            Brake();
+            Brake(true);
         }
         else{
-            lightControl.ChangeBacklight(false);
-        }
-        
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-
-            lightControl.ChangeLight();
+            Brake(false);
         }
 
         Speed();
+        FuelSystem();
 
+    }
+
+    public void FuelSystem()
+    {
+        
+        fuel -= speedOnKm * fuelEfficiency * Time.deltaTime;
+        if(fuel < 0) { fuel = 0; }
+        //Debug.Log("fuel" + fuel);
+        if(fuel == 0)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                WC[i].brakeTorque = carbody.mass/2;
+
+                WC[i].motorTorque = 0;
+                //Debug.Log("braked");
+                audioManager.EngineStopped();
+            }
+        }
     }
 
     public void Speed()

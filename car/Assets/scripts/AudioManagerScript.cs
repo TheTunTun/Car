@@ -11,6 +11,7 @@ public class AudioManagerScript : MonoBehaviour
     [SerializeField] private AudioSource brake;
     [SerializeField] private AudioSource honk;
     [SerializeField] private AudioSource impact;
+    [SerializeField] private AudioSource fuelSound;
 
     
     [SerializeField] private AudioSource gear;
@@ -50,7 +51,7 @@ public class AudioManagerScript : MonoBehaviour
         if (brake.isPlaying == false && control.speedOnKm > 60)
         {
             brake.Play();
-            Debug.Log("brake sound");
+            //Debug.Log("brake sound");
         }
         
     }
@@ -74,6 +75,11 @@ public class AudioManagerScript : MonoBehaviour
         }
     }
 
+    public void EngineStopped()
+    {
+        engine.Stop();
+    }
+
     public void Impact()
     {
         float impactSoundRange = maxImpact - minImpact;
@@ -81,6 +87,11 @@ public class AudioManagerScript : MonoBehaviour
         impact.volume = minImpact + impactSoundRange * normalizedSpeed;
         //Debug.Log(impact.volume);
         impact.Play();
+    }
+
+    public void FuelPickUP()
+    {
+        fuelSound.Play();
     }
 
     // Update is called once per frame

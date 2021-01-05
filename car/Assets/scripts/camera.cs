@@ -86,6 +86,21 @@ public class camera : MonoBehaviour
 
     private void Update()
     {
+        
+
+    }
+
+    public void ChangeStandMode()
+    {
+        thirdPerson = true;
+        if (stand) { stand = false; standText.text = "Stand Mode Off"; } 
+        else { stand = true; standText.text = "Stand Mode Oo"; }
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+
         if (thirdPerson)
         {
             cameraText.text = "3rd person";
@@ -113,24 +128,5 @@ public class camera : MonoBehaviour
             GetComponent<Camera>().fieldOfView = 50;
         }
 
-        if(Input.GetKey(KeyCode.L))
-        {
-            ChangeStandMode();
-        }
-    }
-
-    public void ChangeStandMode()
-    {
-        thirdPerson = true;
-        if (stand) { stand = false; standText.text = "Stand Mode Off"; } 
-        else { stand = true; standText.text = "Stand Mode Oo"; }
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        
-
-        
     }
 }
