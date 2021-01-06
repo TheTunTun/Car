@@ -63,21 +63,21 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11250}
+      Script: {instanceID: 11252}
     - Class: 114
-      Script: {instanceID: 11408}
+      Script: {instanceID: 11410}
     - Class: 114
-      Script: {instanceID: 11840}
+      Script: {instanceID: 11842}
     - Class: 114
-      Script: {instanceID: 12230}
+      Script: {instanceID: 12234}
     - Class: 114
-      Script: {instanceID: 12252}
+      Script: {instanceID: 12256}
     - Class: 114
-      Script: {instanceID: 12712}
+      Script: {instanceID: 12716}
     - Class: 114
-      Script: {instanceID: 12832}
+      Script: {instanceID: 12836}
     - Class: 114
-      Script: {instanceID: 13066}
+      Script: {instanceID: 13070}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -132,45 +132,45 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11230}
     - Class: 114
-      Script: {instanceID: 11250}
+      Script: {instanceID: 11248}
     - Class: 114
-      Script: {instanceID: 11408}
+      Script: {instanceID: 11252}
     - Class: 114
-      Script: {instanceID: 11424}
+      Script: {instanceID: 11410}
     - Class: 114
-      Script: {instanceID: 11450}
+      Script: {instanceID: 11426}
     - Class: 114
-      Script: {instanceID: 11672}
+      Script: {instanceID: 11452}
     - Class: 114
-      Script: {instanceID: 11840}
+      Script: {instanceID: 11674}
     - Class: 114
-      Script: {instanceID: 11900}
+      Script: {instanceID: 11842}
     - Class: 114
-      Script: {instanceID: 11964}
+      Script: {instanceID: 11902}
     - Class: 114
-      Script: {instanceID: 12054}
+      Script: {instanceID: 11936}
     - Class: 114
-      Script: {instanceID: 12230}
+      Script: {instanceID: 11968}
     - Class: 114
-      Script: {instanceID: 12252}
+      Script: {instanceID: 12058}
     - Class: 114
-      Script: {instanceID: 12394}
+      Script: {instanceID: 12234}
     - Class: 114
-      Script: {instanceID: 12484}
+      Script: {instanceID: 12256}
     - Class: 114
-      Script: {instanceID: 12712}
+      Script: {instanceID: 12398}
     - Class: 114
-      Script: {instanceID: 12902}
+      Script: {instanceID: 12488}
     - Class: 114
-      Script: {instanceID: 13028}
+      Script: {instanceID: 12716}
     - Class: 114
-      Script: {instanceID: 13066}
+      Script: {instanceID: 12906}
     - Class: 114
-      Script: {instanceID: 13068}
+      Script: {instanceID: 13032}
     - Class: 114
-      Script: {instanceID: 17038}
+      Script: {instanceID: 13070}
     - Class: 114
-      Script: {instanceID: 97120}
+      Script: {instanceID: 13072}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -200,6 +200,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Slider
+  - hash:
+      serializedVersion: 2
+      Hash: e2454cf7b078e45dd4efc3a24eec8ab4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: FuelGauge
   - hash:
       serializedVersion: 2
       Hash: 4bc4346a71a8df53a6b106f68ef3a190
@@ -416,6 +422,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CarBodyCollide
+  - hash:
+      serializedVersion: 2
+      Hash: 2c5fdf95f3fe64b9db12f9ee29e33d31
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: fuelbarrel
   - hash:
       serializedVersion: 2
       Hash: a19e574030c2ce2ba92182e7de799e2b
@@ -680,18 +692,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: e2454cf7b078e45dd4efc3a24eec8ab4
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: FuelGauge
-  - hash:
-      serializedVersion: 2
-      Hash: 2c5fdf95f3fe64b9db12f9ee29e33d31
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: fuelbarrel
   platform: 13
   scenePathNames:
   - Assets/Scenes/MainMenu.unity
