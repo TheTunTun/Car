@@ -6,6 +6,7 @@ public class fuelbarrel : MonoBehaviour
 {
 
     [SerializeField] private CarControl1 control;
+    [SerializeField] private MeshCollider car;
     [SerializeField] private float fuelAmount = 10;
     [SerializeField] private AudioManagerScript audioManager;
     // Start is called before the first frame update
@@ -35,7 +36,11 @@ public class fuelbarrel : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        addFuel();
+        if(other == car)
+        {
+            addFuel();
+        }
+        
     }
 
 }

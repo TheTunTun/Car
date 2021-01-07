@@ -145,7 +145,7 @@ public class CarControl1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(vertical);
+        
         Drive(vertical, horizontal);
         
 
@@ -164,13 +164,14 @@ public class CarControl1 : MonoBehaviour
 
         Speed();
         FuelSystem();
+        if(gear == 0) { lightControl.ChangeReverseLight(true); } else { lightControl.ChangeReverseLight(false); }
 
     }
 
     public void FuelSystem()
     {
         
-        fuel -= speedOnKm * fuelEfficiency * Time.deltaTime;
+        fuel -= Mathf.Abs(speedOnKm) * fuelEfficiency * Time.deltaTime;
         if(fuel < 0) { fuel = 0; }
         //Debug.Log("fuel" + fuel);
         if(fuel == 0)

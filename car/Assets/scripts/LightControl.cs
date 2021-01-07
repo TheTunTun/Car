@@ -5,75 +5,36 @@ using UnityEngine;
 public class LightControl : MonoBehaviour
 {
 
-    [Range(0, 2)]
-    private int lightMode = 0;
-    [SerializeField]
-    protected Light[] headLights;
-    [SerializeField]
-    private float lowBeanRotation = 26;
-    [SerializeField]
-    private float lowBeanIntensity = 2;
-    [SerializeField]
-    private float lowBeanRange = 10;
-    [SerializeField]
-    private float lowBeanSpotAngle = 58;
+    [Range(0, 2)]private int lightMode = 2;
+    [SerializeField]private Light[] fogLights;
+    [SerializeField]private Light[] mainLights;
+    
+    
 
 
-    [SerializeField]
-    private float highBeanRotation = 10;
-    [SerializeField]
-    private float highBeanIntensity = 4;
-    [SerializeField]
-    private float highBeanRange = 20;
-    [SerializeField]
-    private float highBeanSpotAngle = 100;
+    
+    
 
-    [SerializeField]
-    private GameObject backLight;
-    [SerializeField]
-    private Material backLightOff;
-    [SerializeField]
-    private Material backLightOn;
+    [SerializeField]private GameObject brakeLight;
+    [SerializeField]private Material brakeLightOff;
+    [SerializeField]private Material brakeLightOn;
+
+    [SerializeField] private GameObject reverseLight;
+    [SerializeField] private Material reverseLightOff;
+    [SerializeField] private Material reverseLightOn;
+
 
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        
+    }
 
     public void ChangeLight()
     {
 
-
-        foreach (Light light in headLights)
-        {
-            var currentLocation = light.transform.localRotation;
-
-
-            switch (lightMode)
-            {
-                case 0:
-                    light.intensity = 0;
-                    //bug.Log("off");
-
-                    break;
-                case 1:
-                    light.intensity = lowBeanIntensity;
-
-                    light.transform.localRotation = Quaternion.Euler(lowBeanRotation, currentLocation.y, 0);
-                    light.range = lowBeanRange;
-                    light.spotAngle = lowBeanSpotAngle;
-                    Debug.Log("low");
-                    break;
-                case 2:
-                    light.intensity = highBeanIntensity;
-
-                    light.transform.localRotation = Quaternion.Euler(highBeanRotation, currentLocation.y, 0);
-                    light.range = highBeanRange;
-                    light.spotAngle = highBeanSpotAngle;
-                    Debug.Log("high");
-                    break;
-
-            }
-
-
-        }
+        
 
         if (lightMode != 2)
         {
@@ -83,7 +44,44 @@ public class LightControl : MonoBehaviour
         {
             lightMode = 0;
         }
+
+        switch (lightMode)
+        {
+            case 0:
+                foreach (Light light in fogLights)
+                {
+                    light.enabled = false;
+                }
+                foreach (Light light in mainLights)
+                {
+                    light.enabled = false;
+                }
+                break;
+            case 1:
+                foreach (Light light in fogLights)
+                {
+                    light.enabled = true;
+                }
+                foreach (Light light in mainLights)
+                {
+                    light.enabled = false;
+                }
+                break;
+            case 2:
+                foreach (Light light in fogLights)
+                {
+                    light.enabled = false;
+                }
+                foreach (Light light in mainLights)
+                {
+                    light.enabled = true;
+                }
+                break;
+        }
+
     }
+
+   
 
     void Start()
     {
@@ -94,11 +92,23 @@ public class LightControl : MonoBehaviour
     {
         if (lighton == true)
         {
-            backLight.GetComponent<MeshRenderer>().material = backLightOn;
+            brakeLight.GetComponent<MeshRenderer>().material = brakeLightOn;
         }
         else
         {
-            backLight.GetComponent<MeshRenderer>().material = backLightOff;
+            brakeLight.GetComponent<MeshRenderer>().material = brakeLightOff;
+        }
+    }
+
+    public void ChangeReverseLight(bool lighton)
+    {
+        if (lighton == true)
+        {
+            reverseLight.GetComponent<MeshRenderer>().material = reverseLightOn;
+        }
+        else
+        {
+            reverseLight.GetComponent<MeshRenderer>().material = reverseLightOff;
         }
     }
 

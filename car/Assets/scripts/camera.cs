@@ -9,7 +9,7 @@ public class camera : MonoBehaviour
     // Start is called before the first frame update
 
     public Transform thirdPrsonobjectfollow; //the car
-    public Transform firstPersonObjectfollow;
+    //public Transform firstPersonObjectfollow;
     public Vector3 thirdPersonOffset;
 
     
@@ -22,8 +22,8 @@ public class camera : MonoBehaviour
     [SerializeField] private Text cameraText;
     [SerializeField] private Text standText;
     [SerializeField] private Transform thirdPersonPosition;
-    [SerializeField] private MeshRenderer carBody;
-    [SerializeField] private GameObject firstPersonCar;
+    //[SerializeField] private MeshRenderer carBody;
+    //[SerializeField] private GameObject firstPersonCar;
 
     public bool stand { get; set; }
 
@@ -32,7 +32,7 @@ public class camera : MonoBehaviour
     private void Awake()
     {
         thirdPerson = true;
-        
+        stand = false;
     }
 
     public void LookAtTarget(Transform objectFollow)
@@ -68,13 +68,16 @@ public class camera : MonoBehaviour
 
     public void ChangeCamera()
     {
+        stand = false;
         if(thirdPerson == true)
         {
             thirdPerson = false;
+            
         }
         else
         {
             thirdPerson = true;
+            
         }
 
 
@@ -96,8 +99,9 @@ public class camera : MonoBehaviour
     public void ChangeStandMode()
     {
         thirdPerson = true;
-        if (stand) { stand = false; standText.text = "Stand Mode Off"; } 
-        else { stand = true; standText.text = "Stand Mode Oo"; }
+        
+        if (stand) { stand = false;  } 
+        else { stand = true; }
     }
 
     // Update is called once per frame
@@ -113,8 +117,8 @@ public class camera : MonoBehaviour
             LookAtTarget(thirdPrsonobjectfollow);
             MoveToTarget(thirdPrsonobjectfollow, thirdPersonOffset);
 
-            carBody.enabled = true;
-            firstPersonCar.SetActive(false);
+            //carBody.enabled = true;
+            //firstPersonCar.SetActive(false);
             GetComponent<Camera>().fieldOfView = 60;
         }
         else
@@ -123,13 +127,15 @@ public class camera : MonoBehaviour
 
             transform.parent = firstPersonPosition;
 
-            carBody.enabled = false;
-            firstPersonCar.SetActive(true);
+            //carBody.enabled = false;
+            //firstPersonCar.SetActive(true);
 
             MoveToTarget();
 
-            GetComponent<Camera>().fieldOfView = 50;
+            GetComponent<Camera>().fieldOfView = 45;
         }
 
+        if (stand) { standText.text = "Stand Mode On"; }
+        else { standText.text = "Stand Mode Off"; }
     }
 }
