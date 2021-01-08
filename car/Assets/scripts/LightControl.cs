@@ -48,6 +48,7 @@ public class LightControl : MonoBehaviour
         switch (lightMode)
         {
             case 0:
+                
                 foreach (Light light in fogLights)
                 {
                     light.enabled = false;

@@ -43,12 +43,14 @@ public class WiperControl : MonoBehaviour
 
     void Wiping()
     {
-        if (wiperDirection == null) { wiperDirection = 0; }
+        float rawlerp =+ Time.deltaTime * wiperSpeed;
+            float lerp = Mathf.Min(rawlerp, 1);
 
         if (wiperDirection == 0)
         {
-            wiperLeft.localRotation = Quaternion.Lerp(wiperLeft.localRotation, wiperLeftEnd.localRotation, Time.deltaTime * wiperSpeed);
-            wiperRight.localRotation = Quaternion.Lerp(wiperRight.localRotation, wiperRightEnd.localRotation, Time.deltaTime * wiperSpeed);
+            
+            wiperLeft.localRotation = Quaternion.Lerp(wiperLeft.localRotation, wiperLeftEnd.localRotation, lerp);
+            wiperRight.localRotation = Quaternion.Lerp(wiperRight.localRotation, wiperRightEnd.localRotation, lerp);
             if (wiperLeft.localRotation == wiperLeftEnd.localRotation && wiperRight.localRotation == wiperRightEnd.localRotation)
             {
                 wiperDirection = 1;
@@ -56,8 +58,8 @@ public class WiperControl : MonoBehaviour
         }
         else if (wiperDirection == 1)
         {
-            wiperLeft.localRotation = Quaternion.Lerp(wiperLeft.localRotation, wiperLeftStart.localRotation, Time.deltaTime * wiperSpeed);
-            wiperRight.localRotation = Quaternion.Lerp(wiperRight.localRotation, wiperRightStart.localRotation, Time.deltaTime * wiperSpeed);
+            wiperLeft.localRotation = Quaternion.Lerp(wiperLeft.localRotation, wiperLeftStart.localRotation, lerp);
+            wiperRight.localRotation = Quaternion.Lerp(wiperRight.localRotation, wiperRightStart.localRotation, lerp);
             if (wiperLeft.localRotation == wiperLeftStart.localRotation && wiperRight.localRotation == wiperRightStart.localRotation)
             {
                 wiperDirection = 0;

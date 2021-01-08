@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 public class CarControl1 : MonoBehaviour
 
@@ -20,8 +22,6 @@ public class CarControl1 : MonoBehaviour
     [SerializeField] private float maxSteerAngle = 30;
 
     [SerializeField] private Rigidbody carbody;
-
-    [SerializeField]public bool brakePressed { set; get; }
 
     [SerializeField] private float wheelRadius = 0.4f;
 
@@ -44,7 +44,7 @@ public class CarControl1 : MonoBehaviour
 
     public float forward { get; set; }
 
-
+    public Action<bool> braking;
 
     
     private LightControl lightControl;
@@ -58,6 +58,8 @@ public class CarControl1 : MonoBehaviour
         lightControl.ChangeLight();
         fuelMax = 30;
         fuel = fuelMax;
+
+        braking += Brake;
         
     }
     void Start()
@@ -110,10 +112,13 @@ public class CarControl1 : MonoBehaviour
             wheels[i].transform.rotation = wheelRotation;//give that collider rotation to the wheel meesh
             
         }
+
+
     }
 
      public void Brake(bool isBreaking)
     {
+        
         if (isBreaking)
         {
             lightControl.ChangeBacklight(true);
@@ -147,21 +152,6 @@ public class CarControl1 : MonoBehaviour
     {
         
         Drive(vertical, horizontal);
-        
-
-        //Drive(a,b);
-        if (Input.GetKey(KeyCode.Space) && brakePressed == false)
-        {
-            Brake(true);
-
-        }else if(brakePressed == true)
-        {
-            Brake(true);
-        }
-        else{
-            Brake(false);
-        }
-
         Speed();
         FuelSystem();
         if(gear == 0) { lightControl.ChangeReverseLight(true); } else { lightControl.ChangeReverseLight(false); }

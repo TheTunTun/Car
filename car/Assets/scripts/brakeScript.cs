@@ -8,7 +8,6 @@ using UnityEngine.EventSystems;
 
 public class brakeScript : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
 {
-    bool pointerDown = false;
     // Start is called before the first frame update
     
     [SerializeField]
@@ -16,12 +15,12 @@ public class brakeScript : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        pointerDown = true;
+        control.braking(true);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        pointerDown = false;
+        control.braking(false);
     }
 
     void Start()
@@ -32,15 +31,7 @@ public class brakeScript : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
     // Update is called once per frame
     void Update()
     {
-        if(pointerDown)
-        {
-
-            control.brakePressed = true;
-        }
-        else
-        {
-            control.brakePressed = false;
-        }
+        
         
     }
 }
