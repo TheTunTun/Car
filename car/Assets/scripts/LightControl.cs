@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LightControl : MonoBehaviour
 {
@@ -8,9 +10,12 @@ public class LightControl : MonoBehaviour
     [Range(0, 2)]private int lightMode = 2;
     [SerializeField]private Light[] fogLights;
     [SerializeField]private Light[] mainLights;
-    
+
+    [SerializeField] private Material turnLightOff;
+    [SerializeField] private Material turnLightOn;
     
 
+    float nextInterval;
 
     
     
@@ -23,6 +28,7 @@ public class LightControl : MonoBehaviour
     [SerializeField] private Material reverseLightOff;
     [SerializeField] private Material reverseLightOn;
 
+   
 
     // Start is called before the first frame update
 
@@ -30,6 +36,36 @@ public class LightControl : MonoBehaviour
     {
         
     }
+
+    public void TurnSignalOn(bool turn, GameObject signal)
+    {
+        if(turn == true)
+        {
+            Debug.Log("ON");
+            Debug.Log(Time.time + " and " + nextInterval);
+            if (Time.time > nextInterval)
+            {
+                if(signal.GetComponent<MeshRenderer>().sharedMaterial == turnLightOff)
+                {
+
+                    signal.GetComponent<MeshRenderer>().material = turnLightOn;
+                }
+                else
+                {
+                    signal.GetComponent<MeshRenderer>().material = turnLightOff;
+                }
+                
+                nextInterval = Time.time + 1;
+            }
+
+        }
+        else
+        {
+            signal.GetComponent<MeshRenderer>().material = turnLightOff;
+        }
+    }
+
+   
 
     public void ChangeLight()
     {
@@ -115,6 +151,11 @@ public class LightControl : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        
+    }
+
+    private void FixedUpdate()
     {
         
     }
