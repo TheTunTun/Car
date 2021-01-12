@@ -31,6 +31,8 @@ public class AudioManagerScript : MonoBehaviour
 
     public bool isBraking { get; set; }
 
+    [SerializeField] private brakeDust dust;
+
     private void Awake()
     {
         //audioListener = GetComponent<AudioListener>();
@@ -52,7 +54,9 @@ public class AudioManagerScript : MonoBehaviour
         {
             brake.Play();
             //Debug.Log("brake sound");
+            dust.StartDust();
         }
+        
         
     }
 

@@ -27,6 +27,8 @@ public class CarControl1 : MonoBehaviour
 
     [SerializeField] private float fuelEfficiency = 0.01f;
 
+    [SerializeField] private brakeDust dust;
+
     
     private float rpm = 0;
 
@@ -141,7 +143,7 @@ public class CarControl1 : MonoBehaviour
                 WC[i].brakeTorque = 0;
 
             }
-            
+            dust.StopDust();
         }
 
         
