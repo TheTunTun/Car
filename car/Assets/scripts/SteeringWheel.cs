@@ -76,12 +76,8 @@ public class SteeringWheel : MonoBehaviour,IDragHandler,IPointerDownHandler,IPoi
 
         //Debug.Log(wheel.rotation);
 
-        if(cameraMode.thirdPerson == false)
-        {
-            steeringModel.localEulerAngles = wheel.localEulerAngles;
-            
-        }
-        
+        steeringModel.localEulerAngles = wheel.localEulerAngles;
+
     }
 
     

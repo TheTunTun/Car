@@ -12,27 +12,34 @@ public class camera : MonoBehaviour
     //public Transform firstPersonObjectfollow;
     public Vector3 thirdPersonOffset;
 
-    
+    private enum cameraState
+    {
+        firstPerson,
+        thirdPerson,
+        stand,
+        customize,
+    }
+
+    private cameraState state;
+    private cameraState resumeState;
     
     public float followSpeed = 10;
     public float lookSpeed = 10;
 
-
+    [SerializeField] private Camera customizeCamera;
     [SerializeField] private Transform firstPersonPosition;
     [SerializeField] private Text cameraText;
     [SerializeField] private Text standText;
     [SerializeField] private Transform thirdPersonPosition;
-    //[SerializeField] private MeshRenderer carBody;
-    //[SerializeField] private GameObject firstPersonCar;
+    [SerializeField] private Transform customizeCameraPosition;
 
-    public bool stand { get; set; }
-
-    public bool thirdPerson { get; set; }
+    [SerializeField] private CarCustomization carCustomization;
 
     private void Awake()
     {
-        thirdPerson = true;
-        stand = false;
+        state = cameraState.thirdPerson;
+        carCustomization.customize += ChangeCustomizeCamera;
+        carCustomization.resumeGame += ResumeCamera;
     }
 
     public void LookAtTarget(Transform objectFollow)
@@ -52,11 +59,8 @@ public class camera : MonoBehaviour
                             objectFollow.up * offset.y;
         //Debug.Log(targetPos);
 
-        if(stand == false)
-        {
-            transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);// go between one value to another
-                                                                                                           //Debug.Log("followspeed"+ followSpeed * followSpeedMultiplyer * Time.deltaTime);
-        }
+        transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);// go between one value to another
+   
     }
 
     public void MoveToTarget()
@@ -66,23 +70,7 @@ public class camera : MonoBehaviour
         
     }
 
-    public void ChangeCamera()
-    {
-        stand = false;
-        if(thirdPerson == true)
-        {
-            thirdPerson = false;
-            
-        }
-        else
-        {
-            thirdPerson = true;
-            
-        }
-
-
-
-    }
+    
     void Start()
     {
         
@@ -95,47 +83,95 @@ public class camera : MonoBehaviour
         }
 
     }
-
+    public void ChangeCamera()
+    {
+        if(state == cameraState.thirdPerson)
+        {
+            state = cameraState.firstPerson;
+        }else if(state == cameraState.firstPerson)
+        {
+            state = cameraState.thirdPerson;
+        }
+        else if(state == cameraState.stand)
+        {
+            state = cameraState.thirdPerson;
+        }
+    }
     public void ChangeStandMode()
     {
-        thirdPerson = true;
+
+        if(state != cameraState.stand) { state = cameraState.stand; }
+        else { state = cameraState.thirdPerson; }
         
-        if (stand) { stand = false;  } 
-        else { stand = true; }
     }
+
+    void ChangeCustomizeCamera()
+    {
+        resumeState = state;
+        state = cameraState.customize;
+        
+
+
+
+    }
+
+    void ResumeCamera()
+    {
+        state = resumeState;
+    }
+
+    
 
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        if (thirdPerson)
+        Debug.Log(state);
+        switch (state)
         {
-            cameraText.text = "3rd person";
-            transform.parent = thirdPersonPosition;
+            case cameraState.thirdPerson:
+
+                cameraText.text = "3rd person";
+                standText.text = "Stand Mode Off";
+
+                transform.parent = thirdPersonPosition;
 
 
-            LookAtTarget(thirdPrsonobjectfollow);
-            MoveToTarget(thirdPrsonobjectfollow, thirdPersonOffset);
+                LookAtTarget(thirdPrsonobjectfollow);
+                MoveToTarget(thirdPrsonobjectfollow, thirdPersonOffset);
 
-            //carBody.enabled = true;
-            //firstPersonCar.SetActive(false);
-            GetComponent<Camera>().fieldOfView = 60;
+                GetComponent<Camera>().fieldOfView = 60;
+
+                break;
+
+            case cameraState.firstPerson:
+
+                cameraText.text = "1st person";
+                standText.text = "Stand Mode Off";
+
+                transform.parent = firstPersonPosition;
+
+                MoveToTarget();
+
+                GetComponent<Camera>().fieldOfView = 45;
+
+                break;
+
+            case cameraState.stand:
+
+                standText.text = "Stand Mode On";
+                transform.parent = thirdPersonPosition;
+                LookAtTarget(thirdPrsonobjectfollow);
+                GetComponent<Camera>().fieldOfView = 60;
+
+                break;
+            case cameraState.customize:
+
+                transform.parent = customizeCameraPosition;
+                MoveToTarget();
+
+                break;
+
         }
-        else
-        {
-            cameraText.text = "1st person";
 
-            transform.parent = firstPersonPosition;
-
-            //carBody.enabled = false;
-            //firstPersonCar.SetActive(true);
-
-            MoveToTarget();
-
-            GetComponent<Camera>().fieldOfView = 45;
-        }
-
-        if (stand) { standText.text = "Stand Mode On"; }
-        else { standText.text = "Stand Mode Off"; }
     }
 }

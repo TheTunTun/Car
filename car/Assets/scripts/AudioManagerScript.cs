@@ -11,7 +11,7 @@ public class AudioManagerScript : MonoBehaviour
     [SerializeField] private AudioSource brake;
     [SerializeField] private AudioSource honk;
     [SerializeField] private AudioSource impact;
-    [SerializeField] private AudioSource fuelSound;
+    
 
     
     [SerializeField] private AudioSource gear;
@@ -27,6 +27,8 @@ public class AudioManagerScript : MonoBehaviour
 
     [SerializeField] private float maxSpeed = 120f;
 
+    [SerializeField] private CarCustomization carCustomization;
+
     public bool gearChanged { get; set; }
 
     public bool isBraking { get; set; }
@@ -36,6 +38,8 @@ public class AudioManagerScript : MonoBehaviour
     private void Awake()
     {
         //audioListener = GetComponent<AudioListener>();
+        carCustomization.customize += EnginePaused;
+        carCustomization.resumeGame += EngineResume;
     }
 
     void Enginesound()
@@ -49,16 +53,18 @@ public class AudioManagerScript : MonoBehaviour
     }
 
     public void BrakeSound()
-    {
+    {   
+        
         if (brake.isPlaying == false && control.speedOnKm > 60)
         {
             brake.Play();
             //Debug.Log("brake sound");
             dust.StartDust();
+            
         }
         
-        
     }
+    
 
     public void GearChange()
     {
@@ -84,6 +90,13 @@ public class AudioManagerScript : MonoBehaviour
         engine.Stop();
     }
 
+    public void EnginePaused()
+    {
+        engine.Pause();
+    }
+
+    public void EngineResume() { engine.UnPause(); }
+
     public void Impact()
     {
         float impactSoundRange = maxImpact - minImpact;
@@ -93,9 +106,9 @@ public class AudioManagerScript : MonoBehaviour
         impact.Play();
     }
 
-    public void FuelPickUP()
+    public void FuelPickUP(AudioSource fuelsound)
     {
-        fuelSound.Play();
+        fuelsound.Play();
     }
 
     // Update is called once per frame
@@ -104,6 +117,11 @@ public class AudioManagerScript : MonoBehaviour
         Enginesound();
         
         if(gear.isPlaying == false) { gearChanged = false; }
+        if(brake.isPlaying == false )
+        {
+            dust.StopDust();
+        }
+        
         
     }
 }

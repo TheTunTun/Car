@@ -143,7 +143,7 @@ public class CarControl1 : MonoBehaviour
                 WC[i].brakeTorque = 0;
 
             }
-            dust.StopDust();
+            
         }
 
         
@@ -185,6 +185,8 @@ public class CarControl1 : MonoBehaviour
         float speedOnMeter = (circumference * rpm) * 60;  //metre per hour
         speedOnKm = speedOnMeter / 1000;
         //Debug.Log("Speed "+speedOnKm + " km" + "rpm" + rpm);
+        
+        
     }
 
     public void RpmLimiter(float g)

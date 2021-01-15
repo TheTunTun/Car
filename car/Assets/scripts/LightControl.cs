@@ -9,10 +9,16 @@ public class LightControl : MonoBehaviour
 
     [Range(0, 2)]private int lightMode = 2;
     [SerializeField]private Light[] fogLights;
-    [SerializeField]private Light[] mainLights;
+    [SerializeField] private GameObject fogLightObject;
 
-    [SerializeField] private Material turnLightOff;
-    [SerializeField] private Material turnLightOn;
+    [SerializeField]private Light[] mainLights;
+    [SerializeField] private GameObject mainLightObject;
+
+    [SerializeField] private GameObject rearLight;
+    [SerializeField] private GameObject dayTimeLight;
+
+    [SerializeField] private Material lightOff;
+    [SerializeField] private Material lightOn;
     
 
     float nextInterval;
@@ -21,12 +27,9 @@ public class LightControl : MonoBehaviour
     
 
     [SerializeField]private GameObject brakeLight;
-    [SerializeField]private Material brakeLightOff;
-    [SerializeField]private Material brakeLightOn;
+    
 
     [SerializeField] private GameObject reverseLight;
-    [SerializeField] private Material reverseLightOff;
-    [SerializeField] private Material reverseLightOn;
 
    
 
@@ -45,14 +48,14 @@ public class LightControl : MonoBehaviour
             Debug.Log(Time.time + " and " + nextInterval);
             if (Time.time > nextInterval)
             {
-                if(signal.GetComponent<MeshRenderer>().sharedMaterial == turnLightOff)
+                if(signal.GetComponent<MeshRenderer>().sharedMaterial == lightOff)
                 {
 
-                    signal.GetComponent<MeshRenderer>().material = turnLightOn;
+                    signal.GetComponent<MeshRenderer>().material = lightOn;
                 }
                 else
                 {
-                    signal.GetComponent<MeshRenderer>().material = turnLightOff;
+                    signal.GetComponent<MeshRenderer>().material = lightOff;
                 }
                 
                 nextInterval = Time.time + 1;
@@ -61,7 +64,7 @@ public class LightControl : MonoBehaviour
         }
         else
         {
-            signal.GetComponent<MeshRenderer>().material = turnLightOff;
+            signal.GetComponent<MeshRenderer>().material = lightOff;
         }
     }
 
@@ -93,6 +96,11 @@ public class LightControl : MonoBehaviour
                 {
                     light.enabled = false;
                 }
+                fogLightObject.GetComponent<MeshRenderer>().material = lightOff;
+                mainLightObject.GetComponent<MeshRenderer>().material = lightOff;
+                rearLight.GetComponent<MeshRenderer>().material = lightOff;
+                dayTimeLight.GetComponent<MeshRenderer>().material = lightOn;
+
                 break;
             case 1:
                 foreach (Light light in fogLights)
@@ -103,6 +111,11 @@ public class LightControl : MonoBehaviour
                 {
                     light.enabled = false;
                 }
+                fogLightObject.GetComponent<MeshRenderer>().material = lightOn;
+                mainLightObject.GetComponent<MeshRenderer>().material = lightOff;
+                rearLight.GetComponent<MeshRenderer>().material = lightOn;
+                dayTimeLight.GetComponent<MeshRenderer>().material = lightOff;
+
                 break;
             case 2:
                 foreach (Light light in fogLights)
@@ -113,7 +126,13 @@ public class LightControl : MonoBehaviour
                 {
                     light.enabled = true;
                 }
+                fogLightObject.GetComponent<MeshRenderer>().material = lightOff;
+                mainLightObject.GetComponent<MeshRenderer>().material = lightOn;
+                rearLight.GetComponent<MeshRenderer>().material = lightOn;
+                dayTimeLight.GetComponent<MeshRenderer>().material = lightOff;
+
                 break;
+                
         }
 
     }
@@ -129,11 +148,11 @@ public class LightControl : MonoBehaviour
     {
         if (lighton == true)
         {
-            brakeLight.GetComponent<MeshRenderer>().material = brakeLightOn;
+            brakeLight.GetComponent<MeshRenderer>().material = lightOn;
         }
         else
         {
-            brakeLight.GetComponent<MeshRenderer>().material = brakeLightOff;
+            brakeLight.GetComponent<MeshRenderer>().material = lightOff;
         }
     }
 
@@ -141,11 +160,11 @@ public class LightControl : MonoBehaviour
     {
         if (lighton == true)
         {
-            reverseLight.GetComponent<MeshRenderer>().material = reverseLightOn;
+            reverseLight.GetComponent<MeshRenderer>().material = lightOn;
         }
         else
         {
-            reverseLight.GetComponent<MeshRenderer>().material = reverseLightOff;
+            reverseLight.GetComponent<MeshRenderer>().material = lightOff;
         }
     }
 

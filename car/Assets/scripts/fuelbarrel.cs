@@ -9,10 +9,11 @@ public class fuelbarrel : MonoBehaviour
     [SerializeField] private MeshCollider car;
     [SerializeField] private float fuelAmount = 10;
     [SerializeField] private AudioManagerScript audioManager;
+    private AudioSource fuelsound;
     // Start is called before the first frame update
     void Start()
     {
-        
+        fuelsound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -23,14 +24,15 @@ public class fuelbarrel : MonoBehaviour
 
     public void addFuel()
     {
+        GetComponent<MeshRenderer>().enabled = false;
         control.fuel += fuelAmount;
         if(control.fuel > control.fuelMax)
         {
             control.fuel = control.fuelMax;
         }
 
-        audioManager.FuelPickUP();
-        Destroy(this.gameObject, 0.4f);
+        audioManager.FuelPickUP(fuelsound);
+        Destroy(this.gameObject, fuelsound.clip.length);
         
     }
 
