@@ -125,7 +125,7 @@ public class camera : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log(state);
+
         switch (state)
         {
             case cameraState.thirdPerson:

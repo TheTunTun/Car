@@ -8,6 +8,8 @@ using UnityEngine.EventSystems;
 
 public class GearBox : MonoBehaviour 
 {
+
+    [SerializeField]
     private Slider gearBox;
     [SerializeField]
     private CarControl1 control;
@@ -21,10 +23,17 @@ public class GearBox : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        gearBox = GetComponent<Slider>();
+       
     }
 
-
+    public void gearUp()
+    {
+        if(gearBox.value != gearBox.minValue && audioManager.gearChanged == false) { gearBox.value--; }
+    }
+    public void gearDown()
+    {
+        if (gearBox.value != gearBox.maxValue && audioManager.gearChanged == false) { gearBox.value++; }
+    }
 
     // Update is called once per frame
     void Update()
