@@ -11,9 +11,9 @@ public class AudioManagerScript : MonoBehaviour
     [SerializeField] private AudioSource brake;
     [SerializeField] private AudioSource honk;
     [SerializeField] private AudioSource impact;
-    
 
-    
+    [SerializeField] private AudioSource radio;
+
     [SerializeField] private AudioSource gear;
     
     [SerializeField] private CarControl1 control;
@@ -30,7 +30,7 @@ public class AudioManagerScript : MonoBehaviour
     [SerializeField] private CarCustomization carCustomization;
 
     public bool gearChanged { get; set; }
-
+    [SerializeField]private bool radioIsPlaying;
     public bool isBraking { get; set; }
 
     [SerializeField] private brakeDust dust;
@@ -40,10 +40,19 @@ public class AudioManagerScript : MonoBehaviour
         //audioListener = GetComponent<AudioListener>();
         carCustomization.customize += EnginePaused;
         carCustomization.resumeGame += EngineResume;
+        radioIsPlaying = false;
     }
 
+    public void playRadio()
+    {
+
+        radio.Play();
+        
+    }
+    public void stopRadio() { radio.Stop(); }
     void Enginesound()
     {
+        
         float enginePitchRange = maxPitch - minPitch;
         float absoluteSpeed = Mathf.Abs(control.speedOnKm);
         float normalizedSpeed = absoluteSpeed / maxSpeed;
@@ -51,6 +60,8 @@ public class AudioManagerScript : MonoBehaviour
         engine.pitch = minPitch + enginePitchRange * normalizedSpeed;
         
     }
+
+    public void EngineStart() { engine.Play(); }
 
     public void BrakeSound()
     {   
@@ -115,6 +126,7 @@ public class AudioManagerScript : MonoBehaviour
     void Update()
     {
         Enginesound();
+        
         
         if(gear.isPlaying == false) { gearChanged = false; }
         if(brake.isPlaying == false )

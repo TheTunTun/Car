@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class CarControl1 : MonoBehaviour
@@ -10,24 +11,18 @@ public class CarControl1 : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private AudioManagerScript audioManager;
-
     [SerializeField] private WheelCollider[] WC;
-
     [SerializeField] private GameObject[] wheels;
-
     [SerializeField] private float torque = 200;
-
     [SerializeField] private float braketorque = 30000;
-
     [SerializeField] private float maxSteerAngle = 30;
-
     [SerializeField] private Rigidbody carbody;
-
     [SerializeField] private float wheelRadius = 0.4f;
-
     [SerializeField] private float fuelEfficiency = 0.01f;
+    [SerializeField] private float reduceSpeedRate = 1;
+    [SerializeField] private Text engineOn;
+    public float rpmLimitReached { get; set; }
 
-    [SerializeField] private brakeDust dust;
 
     
     private float rpm = 0;
@@ -45,6 +40,10 @@ public class CarControl1 : MonoBehaviour
     public float horizontal { get; set; }
 
     public float forward { get; set; }
+    public bool isGrounded { get; set; }
+    public bool EngineIsOn { get; set; }
+   
+    
 
     public Action<bool> braking;
 
@@ -62,6 +61,9 @@ public class CarControl1 : MonoBehaviour
         fuel = fuelMax;
 
         braking += Brake;
+        rpmLimitReached = 0;
+        EngineIsOn = false;
+        engineOn.text = "Off";
         
     }
     void Start()
@@ -69,33 +71,50 @@ public class CarControl1 : MonoBehaviour
         
     }
 
+    public void StartEngine()
+    {
+        if(EngineIsOn == true) { EngineIsOn = false; engineOn.text = "Off"; audioManager.EngineStopped(); }
+        else if(EngineIsOn == false){ EngineIsOn = true; engineOn.text = "On"; audioManager.EngineStart(); }
+    }
+
     public void Drive(float acceleration, float steer)
     {
+        if (acceleration == 0 && isGrounded && EngineIsOn) { IncreaseDrag(); }
+        else if(isGrounded && !EngineIsOn) { IncreaseDrag(); }
+        else { ReduceDrag(); }
         //Debug.Log("acce"+acceleration);
         acceleration = Mathf.Clamp(acceleration, -1, 1);
         //Debug.Log("acce" + acceleration + "steer" + steer);
         steer = Mathf.Clamp(steer, -1, 1);
         float thrustTorque = acceleration * torque * forward;
         float carturn = steer * maxSteerAngle;
-        //Debug.Log(thrustTorque);
-        for(int i = 0; i < 4; i++)
+        
+        for(int i = 0; i < WC.Length; i++)
         {
 
             //Debug.Log("driving");
-            if(i == 2 || i == 3)
+            if ((i == 2 || i == 3) && EngineIsOn)
             {   
-                
-                //Debug.Log(WC[i].rpm);
-               
+      
                 if(Mathf.Abs(WC[i].rpm) < rpmLimit)
                     {
                         
                         WC[i].motorTorque = thrustTorque;
-                        //Debug.Log(WC[i].motorTorque);
+                        
                 }else{   WC[i].motorTorque = 0;  }
 
                 rpm = WC[i].rpm;
-                //Debug.Log("rpm "+rpm);
+                if(rpm >= rpmLimit - 1)
+                {
+                    rpmLimitReached = rpmLimitReached + 1 * Time.deltaTime;
+
+                }
+                else
+                {
+                    rpmLimitReached = 0;
+                }
+
+                //Debug.Log("rpmlimitReached "+rpmLimitReached);
             }
 
             if (i == 0 || i == 1) 
@@ -106,7 +125,7 @@ public class CarControl1 : MonoBehaviour
             Quaternion wheelRotation;
             Vector3 wheelPosition;
 
-            //lightControl.ChangeBacklight(false);
+            
             audioManager.isBraking = false;
 
             WC[i].GetWorldPose(out wheelPosition, out wheelRotation);// get the positionn of the wheel colliders
@@ -117,6 +136,8 @@ public class CarControl1 : MonoBehaviour
 
 
     }
+
+   
 
      public void Brake(bool isBreaking)
     {
@@ -150,15 +171,7 @@ public class CarControl1 : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-        Drive(vertical, horizontal);
-        Speed();
-        FuelSystem();
-        if(gear == 0) { lightControl.ChangeReverseLight(true); } else { lightControl.ChangeReverseLight(false); }
-
-    }
+    
 
     public void FuelSystem()
     {
@@ -224,4 +237,27 @@ public class CarControl1 : MonoBehaviour
         //Debug.Log("gear " + gear + "rpmlimit " + rpmLimit);
 
     }
+
+    void IncreaseDrag()
+    {
+        GetComponent<Rigidbody>().drag = reduceSpeedRate;
+    }
+
+    void ReduceDrag()
+    {
+        GetComponent<Rigidbody>().drag = 0;
+    }
+    
+    void Update()
+    {
+        
+        Drive(vertical, horizontal);
+        
+        Speed();
+        FuelSystem();
+        if(gear == 0) { lightControl.ChangeReverseLight(true); } else { lightControl.ChangeReverseLight(false); }
+
+    }
+
+
 }
