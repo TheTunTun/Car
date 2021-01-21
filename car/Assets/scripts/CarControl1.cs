@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 
@@ -20,7 +21,7 @@ public class CarControl1 : MonoBehaviour
     [SerializeField] private float wheelRadius = 0.4f;
     [SerializeField] private float fuelEfficiency = 0.01f;
     [SerializeField] private float reduceSpeedRate = 1;
-    [SerializeField] private Text engineOn;
+    [SerializeField] private Text engineText;
     public float rpmLimitReached { get; set; }
 
 
@@ -41,17 +42,16 @@ public class CarControl1 : MonoBehaviour
 
     public float forward { get; set; }
     public bool isGrounded { get; set; }
-    public bool EngineIsOn { get; set; }
-   
     
-
-    public Action<bool> braking;
 
     
     private LightControl lightControl;
 
-    
+    private enum carState { engineOff, engineOn, noFuel}
+    private carState currentCarState = carState.engineOff;
 
+
+    public Action noMoreFuel;
 
     private void Awake()
     {
@@ -59,13 +59,19 @@ public class CarControl1 : MonoBehaviour
         lightControl.ChangeLight();
         fuelMax = 30;
         fuel = fuelMax;
-
-        braking += Brake;
         rpmLimitReached = 0;
-        EngineIsOn = false;
-        engineOn.text = "Off";
         
+        engineText.text = "Off";
+
+        noMoreFuel += NoMoreFuel;
     }
+
+    private void OnDestroy()
+    {
+        noMoreFuel -= NoMoreFuel;
+    }
+
+
     void Start()
     {
         
@@ -73,16 +79,34 @@ public class CarControl1 : MonoBehaviour
 
     public void StartEngine()
     {
-        if(EngineIsOn == true) { EngineIsOn = false; engineOn.text = "Off"; audioManager.EngineStopped(); }
-        else if(EngineIsOn == false){ EngineIsOn = true; engineOn.text = "On"; audioManager.EngineStart(); }
+        if(currentCarState != carState.noFuel)
+        {
+            currentCarState = carState.engineOn;
+            engineText.text = "On";
+        }
+    }
+
+    public void NoMoreFuel()
+    {
+        currentCarState = carState.noFuel;
+        engineText.text = "Empty";
+    }
+
+    public void StopEngine()
+    {
+        if (currentCarState != carState.noFuel)
+        {
+            currentCarState = carState.engineOff;
+            engineText.text = "Off";
+        }
     }
 
     public void Drive(float acceleration, float steer)
     {
-        if (acceleration == 0 && isGrounded && EngineIsOn) { IncreaseDrag(); }
-        else if(isGrounded && !EngineIsOn) { IncreaseDrag(); }
+        
+        if (acceleration == 0 && isGrounded ) { IncreaseDrag(); }
         else { ReduceDrag(); }
-        //Debug.Log("acce"+acceleration);
+        
         acceleration = Mathf.Clamp(acceleration, -1, 1);
         //Debug.Log("acce" + acceleration + "steer" + steer);
         steer = Mathf.Clamp(steer, -1, 1);
@@ -91,15 +115,16 @@ public class CarControl1 : MonoBehaviour
         
         for(int i = 0; i < WC.Length; i++)
         {
-
-            //Debug.Log("driving");
-            if ((i == 2 || i == 3) && EngineIsOn)
+            
+            
+            if (i == 2 || i == 3)
             {   
-      
+
                 if(Mathf.Abs(WC[i].rpm) < rpmLimit)
                     {
                         
                         WC[i].motorTorque = thrustTorque;
+                    
                         
                 }else{   WC[i].motorTorque = 0;  }
 
@@ -114,7 +139,7 @@ public class CarControl1 : MonoBehaviour
                     rpmLimitReached = 0;
                 }
 
-                //Debug.Log("rpmlimitReached "+rpmLimitReached);
+                
             }
 
             if (i == 0 || i == 1) 
@@ -144,7 +169,7 @@ public class CarControl1 : MonoBehaviour
         
         if (isBreaking)
         {
-            lightControl.ChangeBacklight(true);
+           
             for (int i = 0; i < 4; i++)
             {
                 WC[i].brakeTorque = carbody.mass * braketorque;
@@ -158,7 +183,7 @@ public class CarControl1 : MonoBehaviour
         }
         else
         {
-            lightControl.ChangeBacklight(false);
+            
             for (int i = 0; i < 4; i++)
             {
                 WC[i].brakeTorque = 0;
@@ -181,14 +206,7 @@ public class CarControl1 : MonoBehaviour
         //Debug.Log("fuel" + fuel);
         if(fuel == 0)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                WC[i].brakeTorque = carbody.mass/2;
-
-                WC[i].motorTorque = 0;
-                //Debug.Log("braked");
-                audioManager.EngineStopped();
-            }
+            noMoreFuel.Invoke();
         }
     }
 
@@ -251,8 +269,19 @@ public class CarControl1 : MonoBehaviour
     void Update()
     {
         
-        Drive(vertical, horizontal);
-        
+        switch (currentCarState)
+        {
+            case carState.engineOn:
+                Drive(vertical, horizontal);
+                break;
+            case carState.engineOff:
+                Drive(0, horizontal);
+                break;
+            case carState.noFuel:
+                Drive(0, horizontal);
+                break;
+        }
+
         Speed();
         FuelSystem();
         if(gear == 0) { lightControl.ChangeReverseLight(true); } else { lightControl.ChangeReverseLight(false); }

@@ -144,7 +144,7 @@ public class LightControl : MonoBehaviour
         
     }
 
-    public void ChangeBacklight(bool lighton)
+    public void changeBrakeLight(bool lighton)
     {
         if (lighton == true)
         {

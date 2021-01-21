@@ -8,11 +8,11 @@ public class AudioManagerScript : MonoBehaviour
     // Start is called before the first frame update
 
     [SerializeField] private AudioSource engine;
+    [SerializeField] private AudioClip engineStart;
+    [SerializeField] private AudioClip engineNoice;
     [SerializeField] private AudioSource brake;
-    [SerializeField] private AudioSource honk;
-    [SerializeField] private AudioSource impact;
 
-    [SerializeField] private AudioSource radio;
+    [SerializeField] private AudioSource impact;
 
     [SerializeField] private AudioSource gear;
     
@@ -22,15 +22,16 @@ public class AudioManagerScript : MonoBehaviour
     [SerializeField] private float minPitch = 0.4f;
     [SerializeField] private float maxPitch = 1.2f;
 
-    [SerializeField] private float minImpact = 0.2f;
-    [SerializeField] private float maxImpact = 1f;
+    [SerializeField] private float minImpactVolume = 0.2f;
+    [SerializeField] private float maxImpactVolume = 1f;
 
+    [SerializeField] private float maxImpact = 1000f;
     [SerializeField] private float maxSpeed = 120f;
 
     [SerializeField] private CarCustomization carCustomization;
 
     public bool gearChanged { get; set; }
-    [SerializeField]private bool radioIsPlaying;
+
     public bool isBraking { get; set; }
 
     [SerializeField] private brakeDust dust;
@@ -40,28 +41,61 @@ public class AudioManagerScript : MonoBehaviour
         //audioListener = GetComponent<AudioListener>();
         carCustomization.customize += EnginePaused;
         carCustomization.resumeGame += EngineResume;
-        radioIsPlaying = false;
+
+       
+
+
+
+        control.noMoreFuel += EngineStopped;
+
     }
 
-    public void playRadio()
+    private void OnDestroy()
     {
-
-        radio.Play();
-        
+        control.noMoreFuel -= EngineStopped;
     }
-    public void stopRadio() { radio.Stop(); }
+
+
     void Enginesound()
     {
-        
-        float enginePitchRange = maxPitch - minPitch;
-        float absoluteSpeed = Mathf.Abs(control.speedOnKm);
-        float normalizedSpeed = absoluteSpeed / maxSpeed;
+           
+        if(engine.clip == engineNoice)
+        {
+            
+            float enginePitchRange = maxPitch - minPitch;
+            float absoluteSpeed = Mathf.Abs(control.speedOnKm);
+            float normalizedSpeed = absoluteSpeed / maxSpeed;
 
-        engine.pitch = minPitch + enginePitchRange * normalizedSpeed;
+            engine.pitch = minPitch + enginePitchRange * normalizedSpeed;
+        }
         
     }
 
-    public void EngineStart() { engine.Play(); }
+    public void EngineStart() {
+        engine.PlayOneShot(engineStart, .10f);
+        engine.PlayDelayed(engineStart.length / 2);
+        
+        
+    }
+
+    IEnumerator WaitForEngine(float t)
+    {
+        
+        yield return new WaitForSeconds(t);
+        
+
+    }
+
+    public void EngineStopped()
+    {
+        
+        engine.Stop();
+    }
+
+    public void EnginePaused()
+    {
+        engine.Pause();
+    }
 
     public void BrakeSound()
     {   
@@ -87,32 +121,19 @@ public class AudioManagerScript : MonoBehaviour
         
     }
 
-    public void Honking()
-    {
-        if(honk.isPlaying == false)
-        {
-            honk.Play();
-            Debug.Log("honk");
-        }
-    }
+    
 
-    public void EngineStopped()
-    {
-        engine.Stop();
-    }
-
-    public void EnginePaused()
-    {
-        engine.Pause();
-    }
+    
 
     public void EngineResume() { engine.UnPause(); }
 
-    public void Impact()
+    public void Impact(float i)
     {
-        float impactSoundRange = maxImpact - minImpact;
-        float normalizedSpeed = control.speedOnKm / maxSpeed;
-        impact.volume = minImpact + impactSoundRange * normalizedSpeed;
+        float impactSoundRange = maxImpactVolume - minImpactVolume;
+        if(i > maxImpact) { i = maxImpact; }
+        float normalizedImpact = i / maxImpact;
+        
+        impact.volume = minImpactVolume + impactSoundRange * normalizedImpact ;
         //Debug.Log(impact.volume);
         impact.Play();
     }
@@ -136,4 +157,6 @@ public class AudioManagerScript : MonoBehaviour
         
         
     }
+
+    
 }

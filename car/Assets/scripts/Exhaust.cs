@@ -25,6 +25,22 @@ public class Exhaust : MonoBehaviour
         ExhaustEmission(); 
     }
 
+    public void StartEmission()
+    {
+        foreach (ParticleSystem exhaust in exhausts)
+        {
+            exhaust.Play();
+        }
+    }
+
+    public void StopEmission()
+    {
+        foreach (ParticleSystem exhaust in exhausts)
+        {
+            exhaust.Stop();
+        }
+    }
+
     void ExhaustEmission()
     {
         foreach(ParticleSystem exhaust in exhausts)

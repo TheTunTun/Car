@@ -22,6 +22,8 @@ public class CarBodyCollide : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        audioManager.Impact();
+        float collisionForce = collision.impulse.magnitude/Time.fixedDeltaTime;
+        audioManager.Impact(collisionForce);
+        Debug.Log(collisionForce);
     }
 }

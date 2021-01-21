@@ -61,7 +61,7 @@ public class CarCustomization : MonoBehaviour
         GameIsPaused = true;
         carControlUI.SetActive(false);
         customizeMenuUI.SetActive(true);
-        StartCoroutine(ExecuteAfterTime(.5f));
+        StartCoroutine(ExecuteAfterTime(.2f));
         
     }
     void CloseCustomizeMenu()
