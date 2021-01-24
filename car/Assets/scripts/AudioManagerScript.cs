@@ -28,7 +28,7 @@ public class AudioManagerScript : MonoBehaviour
     [SerializeField] private float maxImpact = 1000f;
     [SerializeField] private float maxSpeed = 120f;
 
-    [SerializeField] private CarCustomization carCustomization;
+   
 
     public bool gearChanged { get; set; }
 
@@ -39,8 +39,7 @@ public class AudioManagerScript : MonoBehaviour
     private void Awake()
     {
         //audioListener = GetComponent<AudioListener>();
-        carCustomization.customize += EnginePaused;
-        carCustomization.resumeGame += EngineResume;
+        
 
        
 

@@ -15,13 +15,10 @@ public class CarCustomization : MonoBehaviour
     [SerializeField] private AudioManagerScript audioManager;
     [SerializeField] private Text ColorLabel;
 
-    [SerializeField] private Button customizeButton;
-    [SerializeField] private Button resumeButton;
 
 
 
-    public Action customize;
-    public Action resumeGame;
+    
     private enum colorState
     {
         defaultColor,
@@ -41,11 +38,7 @@ public class CarCustomization : MonoBehaviour
     {
         defaultColor = paint.material.color;
         ChangePaintColor(0);
-        customize += OpenCustomizeMenu;
-        resumeGame += CloseCustomizeMenu;
-
-        customizeButton.onClick.AddListener(customize.Invoke);
-        resumeButton.onClick.AddListener(resumeGame.Invoke);
+        
     }
 
     
@@ -55,7 +48,7 @@ public class CarCustomization : MonoBehaviour
        
     }
 
-    void OpenCustomizeMenu()
+    public void OpenCustomizeMenu()
     {
         
         GameIsPaused = true;
@@ -64,7 +57,7 @@ public class CarCustomization : MonoBehaviour
         StartCoroutine(ExecuteAfterTime(.2f));
         
     }
-    void CloseCustomizeMenu()
+    public void CloseCustomizeMenu()
     {
         Time.timeScale = 1f;
         GameIsPaused = false;

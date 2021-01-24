@@ -38,8 +38,7 @@ public class camera : MonoBehaviour
     private void Awake()
     {
         state = cameraState.thirdPerson;
-        carCustomization.customize += ChangeCustomizeCamera;
-        carCustomization.resumeGame += ResumeCamera;
+        
     }
 
     public void LookAtTarget(Transform objectFollow)
@@ -105,7 +104,7 @@ public class camera : MonoBehaviour
         
     }
 
-    void ChangeCustomizeCamera()
+    public void ChangeCustomizeCamera()
     {
         resumeState = state;
         state = cameraState.customize;
@@ -115,7 +114,7 @@ public class camera : MonoBehaviour
 
     }
 
-    void ResumeCamera()
+    public void ResumeCamera()
     {
         state = resumeState;
     }

@@ -6,6 +6,7 @@ public class CarBodyCollide : MonoBehaviour
 {
 
     private MeshCollider carBody;
+    private bool collidable = false;
     [SerializeField] AudioManagerScript audioManager;
 
     // Start is called before the first frame update
@@ -22,8 +23,20 @@ public class CarBodyCollide : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        float collisionForce = collision.impulse.magnitude/Time.fixedDeltaTime;
-        audioManager.Impact(collisionForce);
-        Debug.Log(collisionForce);
+        if(collidable == true)
+        {
+            float collisionForce = collision.impulse.magnitude / Time.fixedDeltaTime;
+            audioManager.Impact(collisionForce);
+            Debug.Log(collisionForce);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        collidable = true;
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        collidable = false;
     }
 }

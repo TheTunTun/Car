@@ -269,6 +269,7 @@ public class CarControl1 : MonoBehaviour
     void Update()
     {
         
+
         switch (currentCarState)
         {
             case carState.engineOn:
