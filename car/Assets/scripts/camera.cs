@@ -26,7 +26,7 @@ public class camera : MonoBehaviour
     public float followSpeed = 10;
     public float lookSpeed = 10;
 
-    [SerializeField] private Camera customizeCamera;
+    
     [SerializeField] private Transform firstPersonPosition;
     [SerializeField] private Text cameraText;
     [SerializeField] private Text standText;
