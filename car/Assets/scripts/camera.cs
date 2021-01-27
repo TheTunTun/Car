@@ -10,7 +10,9 @@ public class camera : MonoBehaviour
 
     public Transform thirdPrsonobjectfollow; //the car
     //public Transform firstPersonObjectfollow;
-    public Vector3 thirdPersonOffset;
+    private Vector3 thirdPersonOffset;
+    [SerializeField]private Vector3 farOffset;
+    [SerializeField] private Vector3 nearOffset;
 
     private enum cameraState
     {
@@ -19,6 +21,9 @@ public class camera : MonoBehaviour
         stand,
         customize,
     }
+
+    private enum thirdPersonStates { near, far}
+    private thirdPersonStates thirdPersonState;
 
     private cameraState state;
     private cameraState resumeState;
@@ -32,7 +37,7 @@ public class camera : MonoBehaviour
     [SerializeField] private Text standText;
     [SerializeField] private Transform thirdPersonPosition;
     [SerializeField] private Transform customizeCameraPosition;
-
+    [SerializeField] private GameObject thirdPersonButton;
     [SerializeField] private CarCustomization carCustomization;
 
     private void Awake()
@@ -90,6 +95,7 @@ public class camera : MonoBehaviour
         }else if(state == cameraState.firstPerson)
         {
             state = cameraState.thirdPerson;
+            thirdPersonState = thirdPersonStates.near;
         }
         else if(state == cameraState.stand)
         {
@@ -119,6 +125,9 @@ public class camera : MonoBehaviour
         state = resumeState;
     }
 
+    public void ThirdPersonNear() { thirdPersonState = thirdPersonStates.near; }
+
+    public void ThirdPersonFar() { thirdPersonState = thirdPersonStates.far; }
     
 
     // Update is called once per frame
@@ -133,7 +142,14 @@ public class camera : MonoBehaviour
                 standText.text = "Stand Mode Off";
 
                 transform.parent = thirdPersonPosition;
+                thirdPersonButton.SetActive(true);
 
+                if(thirdPersonState == thirdPersonStates.near) {
+                    thirdPersonOffset = nearOffset;
+                }
+                if(thirdPersonState == thirdPersonStates.far) {
+                    thirdPersonOffset = farOffset;
+                }
 
                 LookAtTarget(thirdPrsonobjectfollow);
                 MoveToTarget(thirdPrsonobjectfollow, thirdPersonOffset);
@@ -148,6 +164,7 @@ public class camera : MonoBehaviour
                 standText.text = "Stand Mode Off";
 
                 transform.parent = firstPersonPosition;
+                thirdPersonButton.SetActive(false);
 
                 MoveToTarget();
 

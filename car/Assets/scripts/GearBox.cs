@@ -55,10 +55,14 @@ public class GearBox : MonoBehaviour
     {
         if(currentAutoDirection == autoDirection.forward)
         {
-            if (control.rpmLimitReached > 3)
+            if (control.rpmLimitReached > 2)
             {
                 control.rpmLimitReached = 0;
                 gearDown();
+            }
+            if(control.formerRpmLimit >= control.rpm && control.formerRpmLimit != 0)
+            {
+                gearUp();
             }
         }
     }

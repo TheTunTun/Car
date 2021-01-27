@@ -26,7 +26,7 @@ public class CarControl1 : MonoBehaviour
 
 
     
-    private float rpm = 0;
+    public float rpm { get; set; }
 
     private float rpmLimit = 300;
     public float speedOnKm { get; set; }
@@ -42,8 +42,8 @@ public class CarControl1 : MonoBehaviour
 
     public float forward { get; set; }
     public bool isGrounded { get; set; }
-    
 
+    public float formerRpmLimit = 300;
     
     private LightControl lightControl;
 
@@ -62,7 +62,7 @@ public class CarControl1 : MonoBehaviour
         rpmLimitReached = 0;
         
         engineText.text = "Off";
-
+        rpm = 0;
         noMoreFuel += NoMoreFuel;
     }
 
@@ -226,32 +226,39 @@ public class CarControl1 : MonoBehaviour
         switch (g)
         {
             case 0:
+                formerRpmLimit = 0;
                 rpmLimit = 300;
                 forward = -1;
                 break;
 
             case 1:
+                formerRpmLimit = 0;
                 rpmLimit = 300;
                 forward = 1;
             break;
             case 2:
+                formerRpmLimit = 300;
                 rpmLimit = 400;
                 forward = 1;
                 break;
             case 3:
+                formerRpmLimit = 400;
                 rpmLimit = 500;
                 forward = 1;
                 break;
             case 4:
+                formerRpmLimit = 500;
                 rpmLimit = 600;
                 forward = 1;
                 break;
             case 5:
+                formerRpmLimit = 600;
                 rpmLimit = 700;
                 forward = 1;
                 break;
 
         }
+        Debug.Log("formerRpmLimit "+ formerRpmLimit);
         //Debug.Log("gear " + gear + "rpmlimit " + rpmLimit);
 
     }
