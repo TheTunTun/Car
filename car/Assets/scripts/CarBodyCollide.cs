@@ -7,12 +7,19 @@ public class CarBodyCollide : MonoBehaviour
 
     private MeshCollider carBody;
     private bool collidable = false;
-    [SerializeField] AudioManagerScript audioManager;
+    private AudioSource impact;
+
+    [SerializeField] private float minImpactVolume = 0.2f;
+    [SerializeField] private float maxImpactVolume = 1f;
+
+    [SerializeField] private float maxImpact = 1000f;
+    [SerializeField] private float maxSpeed = 120f;
 
     // Start is called before the first frame update
     void Start()
     {
-        carBody = GetComponent<MeshCollider>();
+        carBody = this.GetComponent<MeshCollider>();
+        impact = this.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -21,12 +28,25 @@ public class CarBodyCollide : MonoBehaviour
         
     }
 
+    public void Impact(float i)
+    {
+        float impactSoundRange = maxImpactVolume - minImpactVolume;
+        if (i > maxImpact) { i = maxImpact; }
+        float normalizedImpact = i / maxImpact;
+
+        impact.volume = minImpactVolume + impactSoundRange * normalizedImpact;
+        //Debug.Log(impact.volume);
+        impact.Play();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
+        
+
         if(collidable == true)
         {
             float collisionForce = collision.impulse.magnitude / Time.fixedDeltaTime;
-            audioManager.Impact(collisionForce);
+            Impact(collisionForce);
             //Debug.Log(collisionForce);
         }
     }
@@ -35,7 +55,7 @@ public class CarBodyCollide : MonoBehaviour
     {
         collidable = true;
     }
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
         collidable = false;
     }

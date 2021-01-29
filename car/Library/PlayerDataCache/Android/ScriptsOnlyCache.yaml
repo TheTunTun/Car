@@ -1,10 +1,14 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - Arrow
     - AudioManagerScript
     - CarBodyCollide
     - CarControl1
     - CarCustomization
+    - CarPathFinder
+    - CarSound
+    - DriverAI
     - Exhaust
     - FuelGauge
     - GearBox
@@ -193,67 +197,67 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12102}
     - Class: 114
-      Script: {instanceID: 12322}
+      Script: {instanceID: 12324}
     - Class: 114
-      Script: {instanceID: 12626}
+      Script: {instanceID: 12628}
     - Class: 114
-      Script: {instanceID: 12672}
+      Script: {instanceID: 12674}
     - Class: 114
-      Script: {instanceID: 12738}
+      Script: {instanceID: 12740}
     - Class: 114
-      Script: {instanceID: 12862}
+      Script: {instanceID: 12864}
     - Class: 114
-      Script: {instanceID: 12978}
+      Script: {instanceID: 12980}
     - Class: 114
-      Script: {instanceID: 13196}
+      Script: {instanceID: 13198}
     - Class: 114
-      Script: {instanceID: 13244}
+      Script: {instanceID: 13246}
     - Class: 114
-      Script: {instanceID: 13304}
+      Script: {instanceID: 13306}
     - Class: 114
-      Script: {instanceID: 13410}
+      Script: {instanceID: 13412}
     - Class: 114
-      Script: {instanceID: 13812}
+      Script: {instanceID: 13814}
     - Class: 114
-      Script: {instanceID: 13840}
+      Script: {instanceID: 13842}
     - Class: 114
-      Script: {instanceID: 13850}
+      Script: {instanceID: 13852}
     - Class: 114
-      Script: {instanceID: 14140}
+      Script: {instanceID: 14142}
     - Class: 114
-      Script: {instanceID: 14204}
+      Script: {instanceID: 14206}
     - Class: 114
-      Script: {instanceID: 14226}
+      Script: {instanceID: 14228}
     - Class: 114
-      Script: {instanceID: 14358}
+      Script: {instanceID: 14360}
     - Class: 114
-      Script: {instanceID: 14388}
+      Script: {instanceID: 14390}
     - Class: 114
-      Script: {instanceID: 14398}
+      Script: {instanceID: 14400}
     - Class: 114
-      Script: {instanceID: 14718}
+      Script: {instanceID: 14720}
     - Class: 114
-      Script: {instanceID: 14784}
+      Script: {instanceID: 14788}
     - Class: 114
-      Script: {instanceID: 14992}
+      Script: {instanceID: 14996}
     - Class: 114
-      Script: {instanceID: 15026}
+      Script: {instanceID: 15030}
     - Class: 114
-      Script: {instanceID: 15214}
+      Script: {instanceID: 15218}
     - Class: 114
-      Script: {instanceID: 15260}
+      Script: {instanceID: 15264}
     - Class: 114
-      Script: {instanceID: 15474}
+      Script: {instanceID: 15478}
     - Class: 114
-      Script: {instanceID: 15480}
+      Script: {instanceID: 15484}
     - Class: 114
-      Script: {instanceID: 15516}
+      Script: {instanceID: 15520}
     - Class: 114
-      Script: {instanceID: 15540}
+      Script: {instanceID: 15544}
     - Class: 114
-      Script: {instanceID: 15662}
+      Script: {instanceID: 15666}
     - Class: 114
-      Script: {instanceID: 15668}
+      Script: {instanceID: 15672}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -334,61 +338,69 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12196}
     - Class: 114
-      Script: {instanceID: 12290}
+      Script: {instanceID: 12228}
     - Class: 114
-      Script: {instanceID: 12324}
+      Script: {instanceID: 12292}
     - Class: 114
-      Script: {instanceID: 12526}
+      Script: {instanceID: 12326}
     - Class: 114
-      Script: {instanceID: 12626}
+      Script: {instanceID: 12528}
     - Class: 114
-      Script: {instanceID: 12672}
+      Script: {instanceID: 12628}
     - Class: 114
-      Script: {instanceID: 12716}
+      Script: {instanceID: 12674}
     - Class: 114
-      Script: {instanceID: 12862}
+      Script: {instanceID: 12718}
     - Class: 114
-      Script: {instanceID: 12986}
+      Script: {instanceID: 12864}
     - Class: 114
-      Script: {instanceID: 13048}
+      Script: {instanceID: 12988}
     - Class: 114
-      Script: {instanceID: 13094}
+      Script: {instanceID: 13050}
     - Class: 114
-      Script: {instanceID: 13126}
+      Script: {instanceID: 13096}
     - Class: 114
-      Script: {instanceID: 13338}
+      Script: {instanceID: 13128}
     - Class: 114
-      Script: {instanceID: 13608}
+      Script: {instanceID: 13340}
     - Class: 114
-      Script: {instanceID: 13780}
+      Script: {instanceID: 13610}
     - Class: 114
-      Script: {instanceID: 13812}
+      Script: {instanceID: 13782}
     - Class: 114
-      Script: {instanceID: 13850}
+      Script: {instanceID: 13814}
     - Class: 114
-      Script: {instanceID: 13866}
+      Script: {instanceID: 13852}
     - Class: 114
-      Script: {instanceID: 13956}
+      Script: {instanceID: 13868}
     - Class: 114
-      Script: {instanceID: 14096}
+      Script: {instanceID: 13958}
     - Class: 114
-      Script: {instanceID: 14258}
+      Script: {instanceID: 14098}
     - Class: 114
-      Script: {instanceID: 14612}
+      Script: {instanceID: 14260}
     - Class: 114
-      Script: {instanceID: 14640}
+      Script: {instanceID: 14614}
     - Class: 114
-      Script: {instanceID: 15158}
+      Script: {instanceID: 14642}
     - Class: 114
-      Script: {instanceID: 15324}
+      Script: {instanceID: 14730}
     - Class: 114
-      Script: {instanceID: 15422}
+      Script: {instanceID: 15162}
     - Class: 114
-      Script: {instanceID: 15516}
+      Script: {instanceID: 15328}
     - Class: 114
-      Script: {instanceID: 15518}
+      Script: {instanceID: 15426}
     - Class: 114
-      Script: {instanceID: 15538}
+      Script: {instanceID: 15520}
+    - Class: 114
+      Script: {instanceID: 15522}
+    - Class: 114
+      Script: {instanceID: 15542}
+    - Class: 114
+      Script: {instanceID: 68494}
+    - Class: 114
+      Script: {instanceID: 115098}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -407,6 +419,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 193
       Script: {instanceID: 0}
+    - Class: 195
+      Script: {instanceID: 0}
     - Class: 196
       Script: {instanceID: 0}
     - Class: 198
@@ -414,6 +428,8 @@ ScriptsOnlyBuild:
     - Class: 199
       Script: {instanceID: 0}
     - Class: 205
+      Script: {instanceID: 0}
+    - Class: 208
       Script: {instanceID: 0}
     - Class: 213
       Script: {instanceID: 0}
@@ -432,6 +448,8 @@ ScriptsOnlyBuild:
     - Class: 227
       Script: {instanceID: 0}
     - Class: 228
+      Script: {instanceID: 0}
+    - Class: 238
       Script: {instanceID: 0}
     - Class: 1839735485
       Script: {instanceID: 0}
@@ -992,7 +1010,7 @@ ScriptsOnlyBuild:
     className: WaterBase
   - hash:
       serializedVersion: 2
-      Hash: 1ab413c1f1008d55516be08c8dbdee0b
+      Hash: 776919cca503a32abda0312b4637437e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MiniMapScript
@@ -1002,6 +1020,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: GridLayoutGroup
+  - hash:
+      serializedVersion: 2
+      Hash: cab204d455ae74bf3496f18b186c64c5
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DriverAI
   - hash:
       serializedVersion: 2
       Hash: 54d8f12780f7f6df9b0603e66c9a5b3b
@@ -1160,7 +1184,7 @@ ScriptsOnlyBuild:
     className: DebugUIHandlerToggle
   - hash:
       serializedVersion: 2
-      Hash: 1b25128cbef4a0f6d70e17400168c7cf
+      Hash: 0bac82efbe328f6560d37625e54974a7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CarBodyCollide
@@ -1190,7 +1214,7 @@ ScriptsOnlyBuild:
     className: UniversalRenderPipelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 1293ed4658208007b344abc9b6535a3a
+      Hash: e702e238f2c35b558180279565bf47bf
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AudioManagerScript
@@ -1514,6 +1538,12 @@ ScriptsOnlyBuild:
     className: DebugUIHandlerVector2
   - hash:
       serializedVersion: 2
+      Hash: 5ea994d8ed8b8b57beabc6fe42cac992
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: CarPathFinder
+  - hash:
+      serializedVersion: 2
       Hash: 8e6ceabfd38a184413d69b7db56c89cc
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools
@@ -1712,7 +1742,7 @@ ScriptsOnlyBuild:
     className: StandaloneInputModule
   - hash:
       serializedVersion: 2
-      Hash: 8142d3b6d3683e3d773572ff6058516c
+      Hash: e9fa323334835298123a340ea7884efe
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CarControl1
@@ -1776,6 +1806,18 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 7a07ddcb30a154d45198b46cfad5cb03
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: CarSound
+  - hash:
+      serializedVersion: 2
+      Hash: 13e0b16818fcef9e7e6aba2d5f90eb3b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Arrow
   platform: 13
   scenePathNames:
   - Assets/Scenes/MainMenu.unity

@@ -11,7 +11,8 @@ public class CarControl1 : MonoBehaviour
     
 {
     // Start is called before the first frame update
-    [SerializeField] private AudioManagerScript audioManager;
+    private CarSound carSound;
+
     [SerializeField] private WheelCollider[] WC;
     [SerializeField] private GameObject[] wheels;
     [SerializeField] private float torque = 200;
@@ -50,12 +51,15 @@ public class CarControl1 : MonoBehaviour
     private enum carState { engineOff, engineOn, noFuel}
     private carState currentCarState = carState.engineOff;
 
+    [SerializeField] private bool isPlayerCar;
 
     public Action noMoreFuel;
 
     private void Awake()
     {
         lightControl = GetComponent<LightControl>();
+        carSound = this.GetComponent<CarSound>();
+
         lightControl.ChangeLight();
         fuelMax = 30;
         fuel = fuelMax;
@@ -103,13 +107,14 @@ public class CarControl1 : MonoBehaviour
 
     public void Drive(float acceleration, float steer)
     {
-        
+        //Debug.Log("driving"+ acceleration);   
         if (acceleration == 0 && isGrounded ) { IncreaseDrag(); }
         else { ReduceDrag(); }
         
         acceleration = Mathf.Clamp(acceleration, -1, 1);
         //Debug.Log("acce" + acceleration + "steer" + steer);
         steer = Mathf.Clamp(steer, -1, 1);
+
         float thrustTorque = acceleration * torque * forward;
         float carturn = steer * maxSteerAngle;
         
@@ -124,7 +129,7 @@ public class CarControl1 : MonoBehaviour
                     {
                         
                         WC[i].motorTorque = thrustTorque;
-                    
+                      
                         
                 }else{   WC[i].motorTorque = 0;  }
 
@@ -139,6 +144,7 @@ public class CarControl1 : MonoBehaviour
                     rpmLimitReached = 0;
                 }
 
+                //Debug.Log("motortorque" + WC[i].brakeTorque);
                 
             }
 
@@ -151,7 +157,7 @@ public class CarControl1 : MonoBehaviour
             Vector3 wheelPosition;
 
             
-            audioManager.isBraking = false;
+            carSound.isBraking = false;
 
             WC[i].GetWorldPose(out wheelPosition, out wheelRotation);// get the positionn of the wheel colliders
             wheels[i].transform.position = wheelPosition;//assign that collider positionn to the wheel mesh
@@ -175,11 +181,11 @@ public class CarControl1 : MonoBehaviour
                 WC[i].brakeTorque = carbody.mass * braketorque;
 
                 WC[i].motorTorque = 0;
-                //Debug.Log("braked");
+
 
 
             }
-            audioManager.BrakeSound();
+            carSound.BrakeSound();
         }
         else
         {
@@ -200,13 +206,16 @@ public class CarControl1 : MonoBehaviour
 
     public void FuelSystem()
     {
-        
-        fuel -= Mathf.Abs(speedOnKm) * fuelEfficiency * Time.deltaTime;
-        if(fuel < 0) { fuel = 0; }
-        //Debug.Log("fuel" + fuel);
-        if(fuel == 0)
+
+        if (isPlayerCar)
         {
-            noMoreFuel.Invoke();
+            fuel -= Mathf.Abs(speedOnKm) * fuelEfficiency * Time.deltaTime;
+            if (fuel < 0) { fuel = 0; }
+
+            if (fuel == 0)
+            {
+                noMoreFuel.Invoke();
+            }
         }
     }
 
@@ -258,7 +267,7 @@ public class CarControl1 : MonoBehaviour
                 break;
 
         }
-        Debug.Log("formerRpmLimit "+ formerRpmLimit);
+        //Debug.Log("formerRpmLimit "+ formerRpmLimit);
         //Debug.Log("gear " + gear + "rpmlimit " + rpmLimit);
 
     }
@@ -276,10 +285,10 @@ public class CarControl1 : MonoBehaviour
     void Update()
     {
         
-
         switch (currentCarState)
         {
             case carState.engineOn:
+                
                 Drive(vertical, horizontal);
                 break;
             case carState.engineOff:
