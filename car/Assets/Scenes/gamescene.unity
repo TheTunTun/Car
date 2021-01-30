@@ -12688,7 +12688,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410957877}
   m_LocalRotation: {x: -0.00000006266729, y: 0.99595445, z: 0.000000075738306, w: -0.08985949}
-  m_LocalPosition: {x: 34.4, y: 8.9, z: 146.2}
+  m_LocalPosition: {x: 34.4, y: 10.12, z: 146.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2121973399}
@@ -14610,12 +14610,12 @@ GameObject:
   - component: {fileID: 2783136349035302530}
   - component: {fileID: 2773122605933517414}
   - component: {fileID: 2773122605933517415}
-  - component: {fileID: 615008768}
   - component: {fileID: 615008767}
   - component: {fileID: 615008772}
   - component: {fileID: 615008773}
   - component: {fileID: 615008774}
   - component: {fileID: 615008775}
+  - component: {fileID: 615008776}
   m_Layer: 0
   m_Name: carbody
   m_TagString: Untagged
@@ -14741,22 +14741,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &615008768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 615008765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17a515652a7bc6048a212aa3ed83f399, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minImpactVolume: 0.2
-  maxImpactVolume: 1
-  maxImpact: 1000
-  maxSpeed: 120
 --- !u!54 &615008769
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14884,6 +14868,18 @@ MonoBehaviour:
   maxPitch: 1.2
   maxSpeed: 120
   dust: {fileID: 192398606}
+--- !u!114 &615008776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615008765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d2409812254ff64dbf93576fdd7e92e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &617292837
 GameObject:
   m_ObjectHideFlags: 0

@@ -48,6 +48,11 @@ public class SteeringWheel : MonoBehaviour,IDragHandler,IPointerDownHandler,IPoi
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            setForward(1);
+        }
+
         if(!wheelIsheld && wheelAngle != 0f)// let go the wheel and wheelangle > 0
         {
             float deltaAngle = releaseSpeed * Time.deltaTime; // the rate the wheel returns to its original position
